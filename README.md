@@ -29,12 +29,6 @@ Aplicação móvel desenvolvida para facilitar o agendamento de aulas na igreja 
 - **ESLint** - Linter para análise estática de código
 - **Prettier** - Formatador de código
 
-### Como Executar
-
-1. Clone o repositório
-2. Instale as dependências: `pnpm install`
-3. Execute o projeto: `pnpm start`
-
 ### Estrutura de Pastas
 
 ```
