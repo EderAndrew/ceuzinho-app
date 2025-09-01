@@ -1,41 +1,53 @@
 import { useState } from "react";
-import { View, Text, SafeAreaView, TextInput } from "react-native";
+import { View, Text, SafeAreaView, TextInput, Image, TouchableOpacity } from "react-native";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons"
+import { InputComponent } from "@/components/InputComponent";
 
 export default function Login(){
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    
+    const logoImage = require("@/assets/images/logo.png")
+    
     return(
         <SafeAreaView className="flex-1 justify-center">
             <View className="h-[27rem] bg-white justify-center items-center">
-                <Text>Ceuzinho</Text>
+                <Image 
+                    source={logoImage}
+                    className="w-full h-28"
+                    resizeMode="contain"
+                />  
             </View>
-            <View className="flex-1 bg-acquaBlue items-center rounded-t-2xl">
+            <View className="flex-1 justify-between bg-acquaBlue items-center rounded-t-2xl">
                 <View>
                     <View className="w-[100%] mt-8">
-                        <Text className="font-semibold text-3xl text-white">Login</Text>
+                        <Text className="font-RobotoBold font-semibold text-3xl text-white">Login</Text>
                     </View>
-                    <View className="w-96 h-14 mt-6 border border-slate-400 bg-white rounded-md flex-row items-center">
-                        <MaterialIcons size={28} name="person" color={"#9c9c9c"} />
-                        <TextInput
-                            className="text-xl w-[100%]"                          
-                            onChangeText={setEmail}
-                            value={email}
-                            placeholder="E-mail"
-                            keyboardType="email-address"
-                        />
-                    </View>
-                    <View className="w-96 h-14 mt-6 border border-slate-400 bg-white rounded-md flex-row items-center">
-                        <MaterialIcons size={28} name="lock" color={"#9c9c9c"} />
-                        <TextInput
-                            className="text-xl w-[100%]"                          
-                            onChangeText={setPassword}
-                            value={password}
-                            placeholder="Senha"
-                            secureTextEntry={true}
-                        />
+                    <InputComponent 
+                        icon="person"
+                        placeholder="E-mail"
+                        value={email}
+                        onChangeText={setEmail}
+                        keyboardType="email-address"
+                    />
+                    <InputComponent 
+                        icon="lock"
+                        placeholder="Senha"
+                        value={password}
+                        onChangeText={setPassword}
+                        keyboardType="default"
+                        secureTextEntry={true}
+                    />
+                    <View className="w-96 mt-3 items-end">
+                        <TouchableOpacity>
+                            <Text className="font-RobotoLight text-white">Esqueci minha senha</Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
+                <TouchableOpacity className="w-96 h-14 flex justify-center items-center rounded-lg bg-darkPink">
+                    <Text className="font-RobotoRegular text-white font-normal text-xl">Acessar</Text>
+                </TouchableOpacity>
+                <Text className="text-white text-sm mb-5">V1.0 Calendar</Text>
             </View>
         </SafeAreaView>
     )

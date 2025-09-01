@@ -1,34 +1,82 @@
 {
   "expo": {
-    "name": "ceuzinho-app",
+    "name": "ceuzinho",
     "slug": "ceuzinho-app",
-    "scheme": "ceuzinho-app-scheme",
+    "scheme": "ceuzinho-scheme",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./src/assets/icons/icon.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/splash-icon.png",
+      "image": "./src/assets/icons/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "requireFullScreen": true
     },
     "android": {
+      "softwareKeyboardLayoutMode": "pan",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./src/assets/icons/adaptive-icon.png",
+        "resizeMode": "contain",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.drew_ed043.ceuzinhoapp"
     },
     "web": {
-      "favicon": "./assets/favicon.png",
+      "favicon": "./src/assets/icons/favicon.png",
       "bundler": "metro"
     },
     "plugins": [
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#ffffff",
+          "image": "./src/assets/icons/splash-icon.png",
+          "resizeMode": "contain",
+          "imageWidth": 300
+        }
+      ],
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "./src/assets/fonts/Roboto-Regular.ttf",
+            "./src/assets/fonts/Roboto-Medium.ttf",
+            "./src/assets/fonts/Roboto-Bold.ttf"
+          ],
+          "Android": {
+            "fonts": [
+              {
+                "fontFamily": "Roboto",
+                "fontDefinitions":[
+                  {
+                    "path": "./src/assets/fonts/Roboto-Regular.ttf",
+                    "fontFamily": "Roboto",
+                    "fontWeight": "400"
+                  },
+                  {
+                    "path": "./src/assets/fonts/Roboto-Medium.ttf",
+                    "fontFamily": "Roboto",
+                    "fontWeight": "500"
+                  },
+                  {
+                    "path": "./src/assets/fonts/Roboto-Bold.ttf",
+                    "fontFamily": "Roboto",
+                    "fontWeight": "700"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
       "expo-router"
+      
     ]
   }
 }

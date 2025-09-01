@@ -6,6 +6,13 @@ module.exports = {
   presets: [require("nativewind/preset")],
   theme: {
     extend: {
+      fontFamily:{
+        Roboto: ["Roboto", "sans-serif"],
+        RobotoBold: ["Roboto-Bold", "sans-serif"],
+        RobotoLight: ["Roboto-Light", "sans-serif"],
+        RobotoRegular: ["Roboto-Regular", "sans-serif"],
+        RobotoSemibold: ["Roboto-SemiBold", "sans-serif"]
+      },
       colors: {
         pink: "#f065a6",
         darkPink: "#df1b7d",

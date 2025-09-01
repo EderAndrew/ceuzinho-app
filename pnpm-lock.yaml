@@ -14,12 +14,21 @@ importers:
       expo-constants:
         specifier: ~17.1.7
         version: 17.1.7(expo@53.0.22(@babel/core@7.28.3)(@expo/metro-runtime@5.0.4(react-native@0.79.5(@babel/core@7.28.3)(@types/react@19.0.14)(react@19.0.0)))(react-native@0.79.5(@babel/core@7.28.3)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.5(@babel/core@7.28.3)(@types/react@19.0.14)(react@19.0.0))
+      expo-font:
+        specifier: ~13.3.2
+        version: 13.3.2(expo@53.0.22(@babel/core@7.28.3)(@expo/metro-runtime@5.0.4(react-native@0.79.5(@babel/core@7.28.3)(@types/react@19.0.14)(react@19.0.0)))(react-native@0.79.5(@babel/core@7.28.3)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react@19.0.0)
+      expo-image:
+        specifier: ~2.4.0
+        version: 2.4.0(expo@53.0.22(@babel/core@7.28.3)(@expo/metro-runtime@5.0.4(react-native@0.79.5(@babel/core@7.28.3)(@types/react@19.0.14)(react@19.0.0)))(react-native@0.79.5(@babel/core@7.28.3)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.5(@babel/core@7.28.3)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       expo-linking:
         specifier: ~7.1.7
         version: 7.1.7(expo@53.0.22(@babel/core@7.28.3)(@expo/metro-runtime@5.0.4(react-native@0.79.5(@babel/core@7.28.3)(@types/react@19.0.14)(react@19.0.0)))(react-native@0.79.5(@babel/core@7.28.3)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.5(@babel/core@7.28.3)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       expo-router:
         specifier: ~5.1.5
         version: 5.1.5(a413646c39485dd9e5b63a4c12394d83)
+      expo-splash-screen:
+        specifier: ~0.30.10
+        version: 0.30.10(expo@53.0.22(@babel/core@7.28.3)(@expo/metro-runtime@5.0.4(react-native@0.79.5(@babel/core@7.28.3)(@types/react@19.0.14)(react@19.0.0)))(react-native@0.79.5(@babel/core@7.28.3)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))
       expo-status-bar:
         specifier: ~2.2.3
         version: 2.2.3(react-native@0.79.5(@babel/core@7.28.3)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
@@ -1442,6 +1451,17 @@ packages:
       expo: '*'
       react: '*'
 
+  expo-image@2.4.0:
+    resolution: {integrity: sha512-TQ/LvrtJ9JBr+Tf198CAqflxcvdhuj7P24n0LQ1jHaWIVA7Z+zYKbYHnSMPSDMul/y0U46Z5bFLbiZiSidgcNw==}
+    peerDependencies:
+      expo: '*'
+      react: '*'
+      react-native: '*'
+      react-native-web: '*'
+    peerDependenciesMeta:
+      react-native-web:
+        optional: true
+
   expo-keep-awake@14.1.4:
     resolution: {integrity: sha512-wU9qOnosy4+U4z/o4h8W9PjPvcFMfZXrlUoKTMBW7F4pLqhkkP/5G4EviPZixv4XWFMjn1ExQ5rV6BX8GwJsWA==}
     peerDependencies:
@@ -1479,6 +1499,11 @@ packages:
         optional: true
       react-native-reanimated:
         optional: true
+
+  expo-splash-screen@0.30.10:
+    resolution: {integrity: sha512-Tt9va/sLENQDQYeOQ6cdLdGvTZ644KR3YG9aRlnpcs2/beYjOX1LHT510EGzVN9ljUTg+1ebEo5GGt2arYtPjw==}
+    peerDependencies:
+      expo: '*'
 
   expo-status-bar@2.2.3:
     resolution: {integrity: sha512-+c8R3AESBoduunxTJ8353SqKAKpxL6DvcD8VKBuh81zzJyUUbfB4CVjr1GufSJEKsMzNPXZU+HJwXx7Xh7lx8Q==}
@@ -4795,6 +4820,12 @@ snapshots:
       fontfaceobserver: 2.3.0
       react: 19.0.0
 
+  expo-image@2.4.0(expo@53.0.22(@babel/core@7.28.3)(@expo/metro-runtime@5.0.4(react-native@0.79.5(@babel/core@7.28.3)(@types/react@19.0.14)(react@19.0.0)))(react-native@0.79.5(@babel/core@7.28.3)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.5(@babel/core@7.28.3)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0):
+    dependencies:
+      expo: 53.0.22(@babel/core@7.28.3)(@expo/metro-runtime@5.0.4(react-native@0.79.5(@babel/core@7.28.3)(@types/react@19.0.14)(react@19.0.0)))(react-native@0.79.5(@babel/core@7.28.3)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
+      react: 19.0.0
+      react-native: 0.79.5(@babel/core@7.28.3)(@types/react@19.0.14)(react@19.0.0)
+
   expo-keep-awake@14.1.4(expo@53.0.22(@babel/core@7.28.3)(@expo/metro-runtime@5.0.4(react-native@0.79.5(@babel/core@7.28.3)(@types/react@19.0.14)(react@19.0.0)))(react-native@0.79.5(@babel/core@7.28.3)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react@19.0.0):
     dependencies:
       expo: 53.0.22(@babel/core@7.28.3)(@expo/metro-runtime@5.0.4(react-native@0.79.5(@babel/core@7.28.3)(@types/react@19.0.14)(react@19.0.0)))(react-native@0.79.5(@babel/core@7.28.3)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
@@ -4852,6 +4883,13 @@ snapshots:
       - '@types/react'
       - react
       - react-native
+      - supports-color
+
+  expo-splash-screen@0.30.10(expo@53.0.22(@babel/core@7.28.3)(@expo/metro-runtime@5.0.4(react-native@0.79.5(@babel/core@7.28.3)(@types/react@19.0.14)(react@19.0.0)))(react-native@0.79.5(@babel/core@7.28.3)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)):
+    dependencies:
+      '@expo/prebuild-config': 9.0.11
+      expo: 53.0.22(@babel/core@7.28.3)(@expo/metro-runtime@5.0.4(react-native@0.79.5(@babel/core@7.28.3)(@types/react@19.0.14)(react@19.0.0)))(react-native@0.79.5(@babel/core@7.28.3)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
+    transitivePeerDependencies:
       - supports-color
 
   expo-status-bar@2.2.3(react-native@0.79.5(@babel/core@7.28.3)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0):
