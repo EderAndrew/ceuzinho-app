@@ -2,6 +2,7 @@ import { useState } from "react";
 import { View, Text, SafeAreaView, Image, TouchableOpacity } from "react-native";
 import { InputComponent } from "@/components/InputComponent";
 import { LoginSchema } from "@/schemas/login.schema";
+import { signIn } from "@/api/service/auth.service";
 
 export default function Login(){
     const [form, setForm] = useState<LoginSchema>({
@@ -11,9 +12,12 @@ export default function Login(){
     
     const logoImage = require("@/assets/images/logo.png")
     
-    const handleLogin = () => {
-        console.log(form)
+    const handleLogin = async() => {
+        const data = await signIn(form)
+
+        console.log(data)
     }
+
     return(
         <SafeAreaView className="flex-1 justify-center">
             <View className="h-[27rem] bg-white justify-center items-center">
