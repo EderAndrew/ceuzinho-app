@@ -33,6 +33,15 @@
     },
     "plugins": [
       [
+        "react-native-edge-to-edge",
+        {
+          "android": {
+            "parentTheme": "Default",
+            "enforceNavigationBarContrast": false
+          }
+        }
+      ],
+      [
         "expo-splash-screen",
         {
           "backgroundColor": "#ffffff",
@@ -53,7 +62,7 @@
             "fonts": [
               {
                 "fontFamily": "Roboto",
-                "fontDefinitions":[
+                "fontDefinitions": [
                   {
                     "path": "./src/assets/fonts/Roboto-Regular.ttf",
                     "fontFamily": "Roboto",
@@ -75,8 +84,8 @@
           }
         }
       ],
-      "expo-router"
-      
+      "expo-router",
+      "react-native-edge-to-edge"
     ]
   }
 }

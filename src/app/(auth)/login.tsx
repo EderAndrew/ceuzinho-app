@@ -1,14 +1,19 @@
 import { useState } from "react";
-import { View, Text, SafeAreaView, TextInput, Image, TouchableOpacity } from "react-native";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons"
+import { View, Text, SafeAreaView, Image, TouchableOpacity } from "react-native";
 import { InputComponent } from "@/components/InputComponent";
+import { LoginSchema } from "@/schemas/login.schema";
 
 export default function Login(){
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
+    const [form, setForm] = useState<LoginSchema>({
+        email: "",
+        password: ""
+    })
     
     const logoImage = require("@/assets/images/logo.png")
     
+    const handleLogin = () => {
+        console.log(form)
+    }
     return(
         <SafeAreaView className="flex-1 justify-center">
             <View className="h-[27rem] bg-white justify-center items-center">
@@ -26,15 +31,15 @@ export default function Login(){
                     <InputComponent 
                         icon="person"
                         placeholder="E-mail"
-                        value={email}
-                        onChangeText={setEmail}
+                        value={form.email}
+                        onChangeText={(text) => setForm({...form, email: text})}
                         keyboardType="email-address"
                     />
                     <InputComponent 
                         icon="lock"
                         placeholder="Senha"
-                        value={password}
-                        onChangeText={setPassword}
+                        value={form.password}
+                        onChangeText={(text) => setForm({...form, password: text})}
                         keyboardType="default"
                         secureTextEntry={true}
                     />
@@ -44,7 +49,10 @@ export default function Login(){
                         </TouchableOpacity>
                     </View>
                 </View>
-                <TouchableOpacity className="w-96 h-14 flex justify-center items-center rounded-lg bg-darkPink">
+                <TouchableOpacity
+                    className="w-96 h-14 flex justify-center items-center rounded-lg bg-darkPink"
+                    onPress={handleLogin}
+                >
                     <Text className="font-RobotoRegular text-white font-normal text-xl">Acessar</Text>
                 </TouchableOpacity>
                 <Text className="text-white text-sm mb-5">V1.0 Calendar</Text>
