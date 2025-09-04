@@ -1,15 +1,20 @@
 import { LoginSchema } from "@/schemas/login.schema"
 import { api } from "../connection"
+import { IUser } from "@/interfaces/IUser"
 
 export const signIn = async(payload: LoginSchema) => {
     try{
-        console.log("Payload: ", payload)
         const response = await api.post("/users/signin", {
             email: payload.email,
             password: payload.password
         })
 
-        return response.data
+        return {
+            error: false,
+            status: response.status,
+            message: response.data.message,
+            token: response.data.token
+        }
     }catch(error: any){
         if (error.response) {
             // Erro vindo da API (ex: 401, 400, etc.)
@@ -35,4 +40,20 @@ export const signIn = async(payload: LoginSchema) => {
             message: "Erro inesperado: " + error.message,
         };
     }
+}
+
+export const userSession = async(token: string) => {
+   try{
+    const response = await api.get("users/me",{
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    })
+
+    return response.data
+   }catch(error: any){
+    console.error(error)
+   }
+
+
 }

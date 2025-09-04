@@ -1,21 +1,17 @@
 import { Tabs } from "expo-router";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons"
+import { TabBar } from "@/components/TabBar";
 
-export default function AdmintLayout() {
+export default function AdmintLayout() {    
     return (
-        <Tabs initialRouteName="calendar" screenOptions={{ headerShown: false}}>
-            <Tabs.Screen name="newRoom" options={{
-                title: 'Sala',
-                tabBarIcon: ({ color }) => <MaterialIcons size={28} name="school" color={color} />
-            }}/>
-            <Tabs.Screen name="calendar" options={{
-                title: 'Calendario',
-                tabBarIcon: ({ color }) => <MaterialIcons size={28} name="calendar-month" color={color} />
-            }}/>
-            <Tabs.Screen name="settings" options={{
-                title: 'config',
-                tabBarIcon: ({ color }) => <MaterialIcons size={28} name="person" color={color} />
-            }}/>
+        <Tabs initialRouteName="calendar" 
+            screenOptions={{
+                headerShown: false
+            }}
+            tabBar={props => <TabBar {...props}/>}
+        >
+            <Tabs.Screen name="newRoom" options={{ title: "Sala" }}/>
+            <Tabs.Screen name="calendar" options={{ title: "Agenda" }}/>
+            <Tabs.Screen name="settings" options={{ title: "Perfil" }}/>
         </Tabs>
     )
 }

@@ -2,9 +2,16 @@ import { useState } from "react";
 import { View, Text, SafeAreaView, Image, TouchableOpacity } from "react-native";
 import { InputComponent } from "@/components/InputComponent";
 import { LoginSchema } from "@/schemas/login.schema";
-import { signIn } from "@/api/service/auth.service";
+import { signIn, userSession } from "@/api/service/auth.service";
+import { ILogin } from "@/interfaces/ILogin"
+import { useRouter } from "expo-router";
+import { useUser } from "@/stores/session";
 
 export default function Login(){
+    const router = useRouter()
+    const { setUser } = useUser()
+    
+    const [message, setMessage] = useState("")
     const [form, setForm] = useState<LoginSchema>({
         email: "",
         password: ""
@@ -13,11 +20,24 @@ export default function Login(){
     const logoImage = require("@/assets/images/logo.png")
     
     const handleLogin = async() => {
-        const data = await signIn(form)
+        setMessage("")
+        const data: ILogin = await signIn(form)
 
-        console.log(data)
+        if(data.error){
+            setMessage(data.message)
+            return
+        }
+
+        const resp = await userSession(data.token as string)
+
+        if(!resp) return setMessage("Erro inesperado.")
+        
+        setUser([resp.user])
+
+        router.replace('/(admin)/calendar')
+
     }
-
+    const ErrorMessage = message.length > 0 ? <Text className="font-RobotoSemibold text-xl text-red-700 text-center mt-5">{message}</Text> : ""
     return(
         <SafeAreaView className="flex-1 justify-center">
             <View className="h-[27rem] bg-white justify-center items-center">
@@ -48,10 +68,11 @@ export default function Login(){
                         secureTextEntry={true}
                     />
                     <View className="w-96 mt-3 items-end">
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => router.navigate('/forgetPassword')}>
                             <Text className="font-RobotoLight text-white">Esqueci minha senha</Text>
                         </TouchableOpacity>
                     </View>
+                    { ErrorMessage }
                 </View>
                 <TouchableOpacity
                     className="w-96 h-14 flex justify-center items-center rounded-lg bg-darkPink"

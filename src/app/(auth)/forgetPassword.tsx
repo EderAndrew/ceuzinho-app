@@ -1,9 +1,9 @@
-import { View, Text } from "react-native";
+import { View, Text, SafeAreaView } from "react-native";
 
 export default function ForgetPassword(){
     return(
-        <View>
+        <SafeAreaView className="flex-1 justify-center items-center">
             <Text>ForgetPassword screen</Text>
-        </View>
+        </SafeAreaView>
     )
 }
