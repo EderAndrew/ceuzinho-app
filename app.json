@@ -33,6 +33,12 @@
     },
     "plugins": [
       [
+        "expo-image-picker",
+        {
+          "photosPermision": "O aplicativo Ceuzinho quer permissão para acessar sua galeria de fotos."
+        }
+      ],
+      [
         "react-native-edge-to-edge",
         {
           "android": {

@@ -11,12 +11,16 @@ const userRole = {
 type UserRoleKey = keyof typeof userRole;
 
 export const useSession = (user: IUser) => {
-    const color = user.bgColor ?? "#008c96";
-    const photoUrl = user.photoUrl
-        ? user.photoUrl.replace("http://localhost:4001", "https://mongrel-excited-goshawk.ngrok-free.app")
-        : undefined;
     const roleKey = user.role;
-    const roleName = roleKey && roleKey in userRole ? userRole[roleKey as UserRoleKey] : "Usuário";
-
-    return { color, photoUrl, roleName }
+    const session = {
+        "name": user.name,
+        "email": user.email,
+        "phone": user.phone,
+        "photo": user.photoUrl,
+        "photoName": user.photo,
+        "roleName": roleKey && roleKey in userRole ? userRole[roleKey as UserRoleKey] : "Usuário",
+        "color": user.bgColor
+    }
+    
+    return { session }
 }

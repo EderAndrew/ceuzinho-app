@@ -1,6 +1,5 @@
 import { LoginSchema } from "@/schemas/login.schema"
 import { api } from "../connection"
-import { IUser } from "@/interfaces/IUser"
 
 export const signIn = async(payload: LoginSchema) => {
     try{
@@ -54,6 +53,4 @@ export const userSession = async(token: string) => {
    }catch(error: any){
     console.error(error)
    }
-
-
 }
