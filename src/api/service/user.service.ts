@@ -1,19 +1,40 @@
-import { api } from "../connection"
+import { api, uploadApi } from "../connection"
 
+type RNFile = {
+    uri: string;
+    name: string;
+    type: string
+}
 
-export const uploadImage = async(userId: string, file: any, token: string) => {
+const url = process.env.EXPO_PUBLIC_URL
+
+export const uploadImage = async(userId: string, file: RNFile, token: string) => {
     try{
-        const response = await api.put(`/users/uploadimage/${userId}`, {
-            document: file
-        },{
+        const formData = new FormData();
+        const payload = {
+            uri: file.uri,
+            name: file.name,
+            type: file.type,
+        }
+        
+        formData.append('document', payload as any);
+        
+        /* const { data } = await uploadApi.put(`/users/uploadimage/${userId}`, formData,{
+            headers:{ 'Authorization': `Bearer ${token}` }
+        }) */
+        const response = await fetch(`${url}/users/uploadimage/${userId}`,{
+            method: 'PUT',
+            body: formData,
             headers: {
-                'Content-Type':'multipart/form-data',
+                'Content-Type': 'multipart/form-data',
                 'Authorization': `Bearer ${token}`
             }
         })
 
-        return response.data
+        const data = await response.json()
+
+        return data
     }catch(error){
-        console.error(error)
+        console.error("Error Message: ",error)
     }
 }

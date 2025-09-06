@@ -2,8 +2,14 @@ import axios from "axios"
 
 export const api = axios.create({
     baseURL: process.env.EXPO_PUBLIC_URL,
+    timeout:15000,
     headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
+        "Accept": "/",
+        "Content-Type": "application/json"
     }
+})
+
+export const uploadApi = axios.create({
+    baseURL: process.env.EXPO_PUBLIC_URL,
+    timeout:15000
 })

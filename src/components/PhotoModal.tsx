@@ -30,10 +30,21 @@ export const PhotoModal = ({ userId, visible, setVisible }:Props) => {
         }
     }
 
-    const uploadPhoto = async() => {
-        const response = await uploadImage(userId, upPhoto, token)
+    const uploadPhoto = async () => {
+        if (!upPhoto) {
+            console.error("No photo selected for upload.");
+            return;
+        }
+        
+        const file: any = {
+            uri: upPhoto.uri,
+            name: upPhoto.fileName,
+            type: upPhoto.mimeType
+        };
+        console.log("MODAL: ", file)
+        const response = await uploadImage(userId, file, token as string);
 
-        console.log("Retorno: ", response)
+        console.log("Retorno: ", response);
     }
 
     const closeModal = () => {
