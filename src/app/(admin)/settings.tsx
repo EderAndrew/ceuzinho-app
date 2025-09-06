@@ -57,6 +57,7 @@ export default function Settings(){
                 </TouchableOpacity>
             </View>
             <PhotoModal
+                userId={user?.[0]?.id.toString() as string}
                 visible={openModal}
                 setVisible={setOpenModal}
             />

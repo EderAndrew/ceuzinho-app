@@ -9,7 +9,7 @@ import { useUser } from "@/stores/session";
 
 export default function Login(){
     const router = useRouter()
-    const { setUser } = useUser()
+    const { setUser, setToken } = useUser()
     
     const [message, setMessage] = useState("")
     const [form, setForm] = useState<LoginSchema>({
@@ -32,6 +32,7 @@ export default function Login(){
 
         if(!resp) return setMessage("Erro inesperado.")
         
+        setToken(data.token as string)
         setUser([resp.user])
 
         router.replace('/(admin)/calendar')

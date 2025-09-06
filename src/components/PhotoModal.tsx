@@ -2,13 +2,19 @@ import { Image, Modal, Text, TouchableOpacity, View } from "react-native"
 import MaterialIcons from "@expo/vector-icons/MaterialIcons"
 import * as ImagePicker from 'expo-image-picker';
 import { useState } from "react"
+import { uploadImage } from "@/api/service/user.service";
+import { useUser } from "@/stores/session";
 
 type Props = {
+    userId: string
     visible: boolean,
     setVisible: (value: boolean) => void
 }
-export const PhotoModal = ({ visible, setVisible }:Props) => {
+
+export const PhotoModal = ({ userId, visible, setVisible }:Props) => {
     const [image, setImage] = useState<string | null>(null);
+    const [upPhoto, setUpPhoto] = useState<ImagePicker.ImagePickerAsset>()
+    const { token } = useUser()
     
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -18,9 +24,16 @@ export const PhotoModal = ({ visible, setVisible }:Props) => {
             quality: 1
         })
 
-        if (!result.canceled) {
+        if (!result.canceled && result.assets && result.assets.length > 0) {
+            setUpPhoto(result.assets[0]);
             setImage(result.assets[0].uri);
         }
+    }
+
+    const uploadPhoto = async() => {
+        const response = await uploadImage(userId, upPhoto, token)
+
+        console.log("Retorno: ", response)
     }
 
     const closeModal = () => {
@@ -48,13 +61,18 @@ export const PhotoModal = ({ visible, setVisible }:Props) => {
                             <MaterialIcons size={28} name="photo-camera-front" color={"#f065a6"} />
                         </TouchableOpacity>
                         {image ?(
-                            <View className="border-2 border-cbrown w-52 h-48 rounded-lg ">
+                            <TouchableOpacity
+                                className="border-2 border-cbrown w-52 h-48 rounded-lg "
+                                onPress={uploadPhoto}>
                                 <Image
                                     className="w-full h-full rounded-lg"
                                     source={{uri: image as string}}
                                     resizeMode="cover"
                                 />
-                            </View>
+                                <View className="absolute bg-slate-400/15 w-full h-full items-center justify-center">
+                                    <MaterialIcons size={28} name="upload" color={"#94a3b8"} />
+                                </View>
+                            </TouchableOpacity>
                             
                         ) : (
                             <View className="border-2 border-slate-400 w-52 h-48 rounded-lg justify-center items-center">
@@ -70,6 +88,5 @@ export const PhotoModal = ({ visible, setVisible }:Props) => {
                 </View>
             </View>
         </Modal>
-        
     )
 }
