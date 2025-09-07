@@ -1,4 +1,4 @@
-import { api, uploadApi } from "../connection"
+import { api } from "../connection"
 
 type RNFile = {
     uri: string;
@@ -19,9 +19,6 @@ export const uploadImage = async(userId: string, file: RNFile, token: string) =>
         
         formData.append('document', payload as any);
         
-        /* const { data } = await uploadApi.put(`/users/uploadimage/${userId}`, formData,{
-            headers:{ 'Authorization': `Bearer ${token}` }
-        }) */
         const response = await fetch(`${url}/users/uploadimage/${userId}`,{
             method: 'PUT',
             body: formData,

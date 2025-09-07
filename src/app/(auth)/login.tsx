@@ -28,7 +28,7 @@ export default function Login(){
             return
         }
 
-        const resp = await userSession(data.token as string)
+        const resp = await userSession(data.token!)
 
         if(!resp) return setMessage("Erro inesperado.")
         

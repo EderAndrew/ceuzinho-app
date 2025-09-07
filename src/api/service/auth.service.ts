@@ -42,7 +42,7 @@ export const signIn = async(payload: LoginSchema) => {
 }
 
 export const userSession = async(token: string) => {
-   try{
+   try{ 
     const response = await api.get("users/me",{
         headers: {
             Authorization: `Bearer ${token}`

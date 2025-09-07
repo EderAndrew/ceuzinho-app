@@ -8,8 +8,3 @@ export const api = axios.create({
         "Content-Type": "application/json"
     }
 })
-
-export const uploadApi = axios.create({
-    baseURL: process.env.EXPO_PUBLIC_URL,
-    timeout:15000
-})

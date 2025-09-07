@@ -3,12 +3,14 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons"
 import { useUser } from "@/stores/session";
 import { useSession } from "@/hooks/useSession";
 import { IUser } from "@/interfaces/IUser";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { PhotoModal } from "@/components/PhotoModal";
+import { LoadingComponent } from "@/components/LoadingComponent";
+import { userSession } from "@/api/service/auth.service";
 
 export default function Settings(){
     const { user } = useUser()
-    const { session} = useSession(user?.[0] as IUser)
+    const { session } = useSession(user?.[0] as IUser)
     const [openModal, setOpenModal] = useState(false)
 
     return(
@@ -18,16 +20,16 @@ export default function Settings(){
                     <Text className="text-4xl font-RobotoBold mt-8 ml-4 text-slate-800">Meu Perfil</Text>
                     <View className="w-full flex justify-center items-center mt-10">
                         <View className="w-40 h-40 bg-slate-400 rounded-full border">
-                            {session.photo && (
+                            {session!.photo && (
                                 <Image 
-                                    source={{ uri: session.photo }}
+                                    source={{ uri: session?.photo }}
                                     className="w-full h-full rounded-full"
                                     resizeMode="cover"
                                 />
                             )}
                         </View>
                         <TouchableOpacity
-                            style={{ backgroundColor: session.color }}
+                            style={{ backgroundColor: session?.color }}
                             className={`p-2 rounded-full absolute ml-24 mt-32`}
                             onPress={()=>setOpenModal(true)}
                         >
@@ -36,18 +38,18 @@ export default function Settings(){
                         
                     </View>
                     <TouchableOpacity
-                        style={{ backgroundColor: session.color }}
+                        style={{ backgroundColor: session?.color }}
                         className=" w-44 p-2 rounded-full self-center mt-5 flex justify-center items-center"
                     >
-                        <Text className="text-white font-Roboto text-xl">{session.roleName}</Text>
+                        <Text className="text-white font-Roboto text-xl">{session!.roleName}</Text>
                     </TouchableOpacity>
                     <View className="mx-5 mt-10 gap-2">
                         <Text className="font-RobotoSemibold text-2xl">Nome</Text>
-                        <Text className="font-Roboto text-xl">{session.name}</Text>
+                        <Text className="font-Roboto text-xl">{session?.name}</Text>
                         <Text className="font-RobotoSemibold text-2xl">E-mail</Text>
-                        <Text>{session.email}</Text>
+                        <Text>{session?.email}</Text>
                         <Text className="font-RobotoSemibold text-2xl">Fone</Text>
-                        <Text>{session.phone}</Text>
+                        <Text>{session?.phone}</Text>
                     </View>
                 </View>            
                 <TouchableOpacity
@@ -61,6 +63,7 @@ export default function Settings(){
                 visible={openModal}
                 setVisible={setOpenModal}
             />
+            <LoadingComponent />
         </SafeAreaView>
     )
 }

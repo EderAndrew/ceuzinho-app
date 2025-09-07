@@ -4,6 +4,9 @@ import * as ImagePicker from 'expo-image-picker';
 import { useState } from "react"
 import { uploadImage } from "@/api/service/user.service";
 import { useUser } from "@/stores/session";
+import { useLoading } from "@/stores/loading";
+import { userSession } from "@/api/service/auth.service";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 type Props = {
     userId: string
@@ -14,7 +17,10 @@ type Props = {
 export const PhotoModal = ({ userId, visible, setVisible }:Props) => {
     const [image, setImage] = useState<string | null>(null);
     const [upPhoto, setUpPhoto] = useState<ImagePicker.ImagePickerAsset>()
-    const { token } = useUser()
+    const [errorMessage, setErrorMessage] = useState("")
+    const { token, setUser } = useUser()
+    const { setLoad } = useLoading()
+  
     
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -31,7 +37,9 @@ export const PhotoModal = ({ userId, visible, setVisible }:Props) => {
     }
 
     const uploadPhoto = async () => {
+        setLoad(true)
         if (!upPhoto) {
+            setLoad(false)
             console.error("No photo selected for upload.");
             return;
         }
@@ -41,26 +49,38 @@ export const PhotoModal = ({ userId, visible, setVisible }:Props) => {
             name: upPhoto.fileName,
             type: upPhoto.mimeType
         };
-        console.log("MODAL: ", file)
-        const response = await uploadImage(userId, file, token as string);
+        
+        const response = await uploadImage(userId, file, token!);
 
-        console.log("Retorno: ", response);
+        if(!response){
+            setLoad(false)
+            setErrorMessage("Erro ao enviar imagem.")
+            return 
+        }
+
+        const resp = await userSession(token!)
+        if (resp?.user) {
+            await AsyncStorage.removeItem("user")
+            setUser([resp.user])
+        }
+        closeModal()
+        setLoad(false)
+        
     }
 
     const closeModal = () => {
         setVisible(false)
-        setImage("")
+        setImage(null)
+        setErrorMessage("")
     }
+
     return(
         <Modal
             animationType="slide"
             visible={visible}
             transparent={true}
-            onRequestClose={() => {
-                setVisible(!visible)
-            }}
         >
-            <View className="bg-slate-900/30 h-full w-full justify-end items-center">
+            <View className="bg-slate-900/30 flex-1 justify-end items-center">
                 <View className="justify-around bg-white w-full h-2/3 rounded-s-2xl mt-4 items-center border border-slate-300">
                     <View className="gap-10 flex w-full items-center justify-center">
                         <TouchableOpacity className="flex flex-row items-center gap-2" onPress={pickImage}>
