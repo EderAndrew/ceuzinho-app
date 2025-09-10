@@ -6,6 +6,7 @@ import { signIn, userSession } from "@/api/service/auth.service";
 import { ILogin } from "@/interfaces/ILogin"
 import { useRouter } from "expo-router";
 import { useUser } from "@/stores/session";
+import { ButtonComponent } from "@/components/ButtonComponent";
 
 export default function Login(){
     const router = useRouter()
@@ -49,11 +50,11 @@ export default function Login(){
                 />  
             </View>
             <View className="flex-1 justify-between bg-acquaBlue items-center rounded-t-2xl">
-                <View>
+                <View className="px-10 gap-4">
                     <View className="w-[100%] mt-8">
                         <Text className="font-RobotoBold font-semibold text-3xl text-white">Login</Text>
                     </View>
-                    <InputComponent 
+                    <InputComponent
                         icon="person"
                         placeholder="E-mail"
                         value={form.email}
@@ -68,19 +69,18 @@ export default function Login(){
                         keyboardType="default"
                         secureTextEntry={true}
                     />
-                    <View className="w-96 mt-3 items-end">
+                    <View className="w-96 items-end">
                         <TouchableOpacity onPress={() => router.navigate('/forgetPassword')}>
                             <Text className="font-RobotoLight text-white">Esqueci minha senha</Text>
                         </TouchableOpacity>
                     </View>
                     { ErrorMessage }
                 </View>
-                <TouchableOpacity
-                    className="w-96 h-14 flex justify-center items-center rounded-lg bg-darkPink"
-                    onPress={handleLogin}
-                >
-                    <Text className="font-RobotoRegular text-white font-normal text-xl">Acessar</Text>
-                </TouchableOpacity>
+                <ButtonComponent
+                    title={"Acessar"}
+                    bgColor={"bg-darkPink"}
+                    handleLogin={handleLogin}
+                />
                 <Text className="text-white text-sm mb-5">V1.0 Calendar</Text>
             </View>
         </SafeAreaView>

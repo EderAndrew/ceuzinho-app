@@ -3,21 +3,28 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons"
 import { useUser } from "@/stores/session";
 import { useSession } from "@/hooks/useSession";
 import { IUser } from "@/interfaces/IUser";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { PhotoModal } from "@/components/PhotoModal";
 import { LoadingComponent } from "@/components/LoadingComponent";
-import { userSession } from "@/api/service/auth.service";
+import { useRouter } from "expo-router";
 
-export default function Settings(){
+export default function Perfil(){
     const { user } = useUser()
     const { session } = useSession(user?.[0] as IUser)
     const [openModal, setOpenModal] = useState(false)
+    const route = useRouter()
 
     return(
-        <SafeAreaView className="flex-1 bg-white">
+        <SafeAreaView className="flex-1 bg-white px-4">
             <View className="flex-1 justify-between">
                 <View>
-                    <Text className="text-4xl font-RobotoBold mt-8 ml-4 text-slate-800">Meu Perfil</Text>
+                    <View className="flex flex-row w-full justify-between items-center">
+                        <Text className="text-4xl font-RobotoBold mt-8 ml-4 text-slate-800">Meu Perfil</Text>
+                        <TouchableOpacity className="mt-8 mr-4" onPress={()=>route.push("/changePassword")}>
+                            <MaterialIcons size={30} name='settings' color={"#1e293b"} />
+                        </TouchableOpacity>
+                    </View>
+                    
                     <View className="w-full flex justify-center items-center mt-10">
                         <View className="w-40 h-40 bg-slate-400 rounded-full border">
                             {session!.photo && (

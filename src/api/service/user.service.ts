@@ -35,3 +35,11 @@ export const uploadImage = async(userId: string, file: RNFile, token: string) =>
         console.error("Error Message: ",error)
     }
 }
+
+export const changePassword = async() => {
+    try{
+
+    }catch(error){
+        console.error(error)
+    }
+}
