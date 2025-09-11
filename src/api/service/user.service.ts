@@ -1,4 +1,6 @@
+import { PasswordSchema } from "@/schemas/changePassword.schema";
 import { api } from "../connection"
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 type RNFile = {
     uri: string;
@@ -36,9 +38,21 @@ export const uploadImage = async(userId: string, file: RNFile, token: string) =>
     }
 }
 
-export const changePassword = async() => {
+export const uploadPassword = async(payload: PasswordSchema, token: string) => {
     try{
+        console.log(payload)
+        const resp = await api.put("/users/changePassword", {
+            email: payload.email,
+            oldPassword: payload.oldPwd,
+            newPassword: payload.newPwd,
+            repeatePassword: payload.repeatPwd
+        }, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
 
+        return {status: resp.status, message: resp.data}
     }catch(error){
         console.error(error)
     }
