@@ -1,5 +1,5 @@
-import { IUser } from "@/interfaces/IUser"
-import { useUser } from "@/stores/session"
+import { ISession, IUser } from "@/interfaces/IUser"
+import { useEffect, useState } from "react";
 
 const userRole = {
     ADMIN: "Administrador",
@@ -11,12 +11,20 @@ const userRole = {
 type UserRoleKey = keyof typeof userRole;
 
 export const useSession = (user: IUser) => {
-    const color = user.bgColor ?? "#008c96";
-    const photoUrl = user.photoUrl
-        ? user.photoUrl.replace("http://localhost:4001", "https://nativcode.com.br")
-        : undefined;
-    const roleKey = user.role;
-    const roleName = roleKey && roleKey in userRole ? userRole[roleKey as UserRoleKey] : "Usuário";
+    //const [session, setSession] = useState<ISession>() 
 
-    return { color, photoUrl, roleName }
+    const roleKey = user.role;
+
+    const session = {
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        photo: user.photoUrl,
+        photoName: user.photo,
+        roleName: roleKey && roleKey in userRole ? userRole[roleKey as UserRoleKey] : "Usuário",
+        color: user.bgColor
+    }
+    //setSession(sess as ISession)
+
+    return { session }
 }

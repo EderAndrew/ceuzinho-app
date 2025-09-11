@@ -11,7 +11,7 @@ export default function AdmintLayout() {
         >
             <Tabs.Screen name="newRoom" options={{ title: "Sala" }}/>
             <Tabs.Screen name="calendar" options={{ title: "Agenda" }}/>
-            <Tabs.Screen name="settings" options={{ title: "Perfil" }}/>
+            <Tabs.Screen name="(settings)" options={{ title: "Perfil" }}/>
         </Tabs>
     )
 }

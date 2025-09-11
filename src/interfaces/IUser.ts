@@ -14,3 +14,13 @@ export interface IUser{
     createdAt: string,
     updatedAt?: string
 }
+
+export interface ISession{
+    name: string,
+    email: string,
+    phone: string,
+    photo: string,
+    photoName: string,
+    roleName: string,
+    color: string
+}
