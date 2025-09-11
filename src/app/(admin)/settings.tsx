@@ -36,6 +36,7 @@ export default function Settings(){
                 <Text className="text-white font-Roboto text-xl">{roleName}</Text>
             </TouchableOpacity>
             {/* Removido: textos de debug */}
+            <Text>{photoUrl}</Text>
         </SafeAreaView>
     )
 }
