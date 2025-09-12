@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { View, Text, SafeAreaView, Image, TouchableOpacity } from "react-native";
+import { View, Text, Image, TouchableOpacity } from "react-native";
 import { InputComponent } from "@/components/InputComponent";
 import { LoginSchema } from "@/schemas/login.schema";
 import { signIn, userSession } from "@/api/service/auth.service";
@@ -7,6 +7,7 @@ import { ILogin } from "@/interfaces/ILogin"
 import { useRouter } from "expo-router";
 import { useUser } from "@/stores/session";
 import { ButtonComponent } from "@/components/ButtonComponent";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Login(){
     const router = useRouter()

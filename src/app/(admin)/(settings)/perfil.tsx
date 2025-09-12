@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, TouchableOpacity, Image, ScrollView } from "react-native";
+import { View, Text, TouchableOpacity, Image, ScrollView } from "react-native";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons"
 import { useUser } from "@/stores/session";
 import { useSession } from "@/hooks/useSession";
@@ -7,6 +7,7 @@ import { useState } from "react";
 import { PhotoModal } from "@/components/PhotoModal";
 import { LoadingComponent } from "@/components/LoadingComponent";
 import { useRouter } from "expo-router";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Perfil(){
     const { user } = useUser()

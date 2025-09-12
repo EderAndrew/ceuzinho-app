@@ -1,4 +1,4 @@
-import { SafeAreaView, Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons"
 import { useRouter } from "expo-router";
 import { InputComponent } from "@/components/InputComponent";
@@ -10,6 +10,7 @@ import { ModalResetPassword } from "@/components/ModalResetPassword";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LoadingComponent } from "@/components/LoadingComponent";
 import { useLoading } from "@/stores/loading";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function ChangePassword(){
     const route = useRouter()
