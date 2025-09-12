@@ -1,5 +1,6 @@
 import { useLoading } from "@/stores/loading"
-import { ActivityIndicator, Modal, SafeAreaView, Text, View } from "react-native"
+import { ActivityIndicator, Modal, Text, View } from "react-native"
+import { SafeAreaView } from "react-native-safe-area-context"
 
 export const LoadingComponent = () => {
     const {load} = useLoading()
