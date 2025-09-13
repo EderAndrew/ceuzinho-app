@@ -33,9 +33,15 @@
     },
     "plugins": [
       [
+        "expo-camera",
+        {
+          "cameraPermission": "O aplicativo $(PRODUCT_NAME) quer permissão para usar a câmera."
+        }
+      ],
+      [
         "expo-image-picker",
         {
-          "photosPermision": "O aplicativo Ceuzinho quer permissão para acessar sua galeria de fotos."
+          "photosPermision": "O aplicativo $(PRODUCT_NAME) quer permissão para acessar sua galeria de fotos."
         }
       ],
       [

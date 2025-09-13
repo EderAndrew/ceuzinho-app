@@ -8,6 +8,7 @@ import { PhotoModal } from "@/components/PhotoModal";
 import { LoadingComponent } from "@/components/LoadingComponent";
 import { useRouter } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { CameraModal } from "@/components/CameraModal";
 
 export default function Perfil(){
     const { user } = useUser()
@@ -72,6 +73,7 @@ export default function Perfil(){
                 setVisible={setOpenModal}
             />
             <LoadingComponent />
+            <CameraModal />
         </SafeAreaView>
     )
 }

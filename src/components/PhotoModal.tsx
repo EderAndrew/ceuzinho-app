@@ -7,16 +7,19 @@ import { useUser } from "@/stores/session";
 import { useLoading } from "@/stores/loading";
 import { userSession } from "@/api/service/auth.service";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useCameraPermissions } from "expo-image-picker";
 
 type Props = {
     userId: string
     visible: boolean,
     setVisible: (value: boolean) => void
+    openCamera: (value: boolean) => void
 }
 
-export const PhotoModal = ({ userId, visible, setVisible }:Props) => {
+export const PhotoModal = ({ userId, visible, setVisible, openCamera }:Props) => {
     const [image, setImage] = useState<string | null>(null);
     const [upPhoto, setUpPhoto] = useState<ImagePicker.ImagePickerAsset>()
+    const [permission, requestPermission] = useCameraPermissions()
     const [errorMessage, setErrorMessage] = useState("")
     const { token, setUser } = useUser()
     const { setLoad } = useLoading()
@@ -68,6 +71,14 @@ export const PhotoModal = ({ userId, visible, setVisible }:Props) => {
         
     }
 
+    const handleCameraPermission = async () => {
+        await requestPermission()
+
+        if (permission?.granted) {
+            openCamera(true)
+        }
+    }
+
     const closeModal = () => {
         setVisible(false)
         setImage(null)
@@ -87,7 +98,7 @@ export const PhotoModal = ({ userId, visible, setVisible }:Props) => {
                             <Text className="text-xl text-darkBlue font-RobotoBold">Carregar Imagem</Text>
                             <MaterialIcons size={28} name="upload" color={"#043a68"} />
                         </TouchableOpacity>
-                        <TouchableOpacity className="flex flex-row items-center gap-2">
+                        <TouchableOpacity className="flex flex-row items-center gap-2" onPress={handleCameraPermission}>
                             <Text className="text-xl text-pink font-RobotoBold">Tirar uma nova foto</Text>
                             <MaterialIcons size={28} name="photo-camera-front" color={"#f065a6"} />
                         </TouchableOpacity>
