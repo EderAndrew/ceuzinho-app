@@ -9,11 +9,13 @@ import { LoadingComponent } from "@/components/LoadingComponent";
 import { useRouter } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { CameraModal } from "@/components/CameraModal";
+import { useCameraPermissions } from "expo-camera";
 
 export default function Perfil(){
     const { user } = useUser()
     const { session } = useSession(user?.[0] as IUser)
     const [openModal, setOpenModal] = useState(false)
+    const [openCamera, setOpenCamera] = useState(false)
     const route = useRouter()
 
     return(
@@ -70,10 +72,14 @@ export default function Perfil(){
             <PhotoModal
                 userId={user?.[0]?.id.toString() as string}
                 visible={openModal}
-                setVisible={setOpenModal}
+                setVisible={setOpenModal} 
+                openCamera={setOpenCamera}
+            />
+            <CameraModal
+                visible={openCamera}
+                setVisible={setOpenCamera}
             />
             <LoadingComponent />
-            <CameraModal />
         </SafeAreaView>
     )
 }

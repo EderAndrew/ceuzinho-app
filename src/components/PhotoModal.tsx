@@ -19,8 +19,8 @@ type Props = {
 export const PhotoModal = ({ userId, visible, setVisible, openCamera }:Props) => {
     const [image, setImage] = useState<string | null>(null);
     const [upPhoto, setUpPhoto] = useState<ImagePicker.ImagePickerAsset>()
-    const [permission, requestPermission] = useCameraPermissions()
     const [errorMessage, setErrorMessage] = useState("")
+    const [permission, requestPermission] = useCameraPermissions()
     const { token, setUser } = useUser()
     const { setLoad } = useLoading()
   
@@ -70,11 +70,10 @@ export const PhotoModal = ({ userId, visible, setVisible, openCamera }:Props) =>
         setLoad(false)
         
     }
-
     const handleCameraPermission = async () => {
-        await requestPermission()
+        if (!permission) return
 
-        if (permission?.granted) {
+        if(permission.granted){
             openCamera(true)
         }
     }
