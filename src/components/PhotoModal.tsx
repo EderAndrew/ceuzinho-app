@@ -8,6 +8,7 @@ import { useLoading } from "@/stores/loading";
 import { userSession } from "@/api/service/auth.service";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useCameraPermissions } from "expo-image-picker";
+import { usePhoto } from "@/stores/photo";
 
 type Props = {
     userId: string
@@ -17,12 +18,12 @@ type Props = {
 }
 
 export const PhotoModal = ({ userId, visible, setVisible, openCamera }:Props) => {
-    const [image, setImage] = useState<string | null>(null);
-    const [upPhoto, setUpPhoto] = useState<ImagePicker.ImagePickerAsset>()
+    //const [upPhoto, setUpPhoto] = useState<ImagePicker.ImagePickerAsset>()
     const [errorMessage, setErrorMessage] = useState("")
     const [permission, requestPermission] = useCameraPermissions()
     const { token, setUser } = useUser()
     const { setLoad } = useLoading()
+    const { image, setImage, upPhoto, setUpPhoto } = usePhoto()
   
     
     const pickImage = async () => {
@@ -52,7 +53,7 @@ export const PhotoModal = ({ userId, visible, setVisible, openCamera }:Props) =>
             name: upPhoto.fileName,
             type: upPhoto.mimeType
         };
-        
+        console.log(file)
         const response = await uploadImage(userId, file, token!);
 
         if(!response){
@@ -80,7 +81,7 @@ export const PhotoModal = ({ userId, visible, setVisible, openCamera }:Props) =>
 
     const closeModal = () => {
         setVisible(false)
-        setImage(null)
+        setImage("")
         setErrorMessage("")
     }
 
