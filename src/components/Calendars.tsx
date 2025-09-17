@@ -1,3 +1,4 @@
+import { ICalendar } from "@/interfaces/ICalendar";
 import { useState } from "react";
 import { StyleSheet } from "react-native";
 import { Calendar, LocaleConfig } from "react-native-calendars"
@@ -11,12 +12,29 @@ LocaleConfig.locales['pt-br'] = {
 };
 LocaleConfig.defaultLocale = 'pt-br'
 
-export const Calendars = () => {
-    const [selected, setSelected] = useState('');
+type Props = {
+    dateNow: string,
+    setDateNow: (date: string) => void
+}
 
+export const Calendars = ({setDateNow, dateNow}:Props) => {
+    const [selected, setSelected] = useState(new Date().toISOString().split('T')[0]);
     const vacation = {key: 'vacation', color: 'red', selectedDotColor: 'blue'};
     const massage = {key: 'massage', color: 'blue', selectedDotColor: 'blue'};
     const workout = {key: 'workout', color: 'green'};
+
+    const handlerDate = (day: ICalendar) => {
+        const [ano, mes, dia] = day.dateString.split("-").map(Number);
+        const dataLocal = new Date(Date.UTC(ano, mes - 1, dia, 3, 0, 0));
+        const fomatedDate = dataLocal.toLocaleString("pt-BR", {
+                timeZone: "America/Sao_Paulo",
+                year: 'numeric', 
+                month: 'short', 
+                day: '2-digit'
+            }).split(", ")[0]
+
+        setDateNow(fomatedDate);
+    }
 
     return (
         <Calendar
@@ -37,14 +55,18 @@ export const Calendars = () => {
             }}
             headerStyle={{
                 borderBottomWidth: 1,
+                borderColor: "#FFF"
             }}
             markedDates={{
-                '2025-09-16': {dots: [vacation, massage, workout], selected: true, selectedColor: '#df1b7d'},
+                [`${selected}`]: {
+                    dots: [vacation, massage, workout],
+                    selected: true, 
+                    selectedColor: '#df1b7d'
+                },
                 '2025-09-17': {dots: [massage, workout], disabled: true}
             }}
             onDayPress={day => {
-                setSelected(day.dateString);
-                console.log('selected day', day);
+               handlerDate(day)
             }}
         />
     )
