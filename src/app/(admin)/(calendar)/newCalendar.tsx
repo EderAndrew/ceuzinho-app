@@ -1,10 +1,10 @@
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Text } from "react-native";
 
-export default function NewRoom() {
+export default function NewCalendar() {
     return (
         <SafeAreaView>
-            <Text>New Room</Text>
+            <Text>New Calendar</Text>
         </SafeAreaView>
     )
 }

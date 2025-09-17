@@ -4,7 +4,7 @@ export default function CalendarLayout() {
     return (
         <Stack screenOptions={{ headerShown: false}}>
             <Stack.Screen name="calendar"/>
-            <Stack.Screen name="newRoom"/>
+            <Stack.Screen name="newCalendar"/>
         </Stack>
     )
 }

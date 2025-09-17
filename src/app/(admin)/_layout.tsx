@@ -3,7 +3,7 @@ import { TabBar } from "@/components/TabBar";
 
 export default function AdmintLayout() {    
     return (
-        <Tabs
+        <Tabs initialRouteName="calendar" 
             screenOptions={{
                 headerShown: false
             }}
