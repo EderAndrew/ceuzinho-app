@@ -1,7 +1,11 @@
 import { View, Text, TouchableOpacity } from "react-native"
 import MaterialIcons from "@expo/vector-icons/MaterialIcons"
+import { ISchedules } from "@/interfaces/ISchedules"
 
-export const DateCard = () => {
+type Props = {
+    data: ISchedules
+}
+export const DateCard = ({data}: Props) => {
     return (
         <View className="w-full flex-row bg-[#E9E9E9] mt-4 border border-slate-400 rounded-lg">
             <View className="bg-[#EBBC16] p-2 rounded-tl-lg roundend-bl-lg justify-center items-center">

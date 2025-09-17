@@ -1,7 +1,7 @@
 import { View, StyleSheet, LayoutChangeEvent } from 'react-native';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { TabBarButton } from './TabBarButton';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
 export function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
@@ -22,6 +22,12 @@ export function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
         transform: [{translateX: tabPositionX.value}]
     }
   })
+
+  useEffect(() => {
+    // Anima para a posição do botão inicialmente focado
+    tabPositionX.value = withSpring(buttonWidth * state.index, { duration: 1500 });
+  }, [buttonWidth, state.index]);
+
   return (
     <View onLayout={onTabbarLayout} style={styles.shadow} className="absolute flex flex-row bottom-14 justify-between items-center bg-[#009cd9] mx-10 rounded-full">
       <Animated.View style={[animatedStyle,{
