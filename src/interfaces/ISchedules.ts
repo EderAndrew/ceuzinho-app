@@ -9,8 +9,8 @@ export interface ISchedules{
     tema: string,
     info?: string,
     createdBy: number,
-    teatcherOne: number,
-    teatcherTwo: number,
+    teatcherOne?: number,
+    teatcherTwo?: number,
     ministratorOne?: number,
     ministratorTwo: number,
     document?: string,
@@ -18,7 +18,9 @@ export interface ISchedules{
     bgColor: string,
     createdAt: string,
     updatedAt?: string,
-    createdByUser: ICreatedUser
+    createdByUser: ICreatedUser,
+    teatcherOneUser: ICreatedUser,
+    teatcherTwoUser: ICreatedUser,
 }
 
 interface ICreatedUser{

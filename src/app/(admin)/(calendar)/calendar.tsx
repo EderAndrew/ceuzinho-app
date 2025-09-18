@@ -8,6 +8,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ISchedules } from "@/interfaces/ISchedules";
 import { useUser } from "@/stores/session";
 import { getSchedulesByDate } from "@/api/service/schedules.service";
+import { useRouter } from "expo-router";
 
 export default function Calendar(){
     const [schedules, setSchedules] = useState<ISchedules[]>([])
@@ -19,26 +20,31 @@ export default function Calendar(){
                 day: '2-digit'
             }).split(", ")[0]);
     const { token } = useUser()
+    const router = useRouter()
         
     useEffect(()=>{
         (async()=>{
             const data = await getSchedulesByDate(dateData, token as string)
             if(!data) return
 
-            setSchedules(data)
+            setSchedules(data.data)
         })()
     },[dateData])
 
     return(
         <SafeAreaView className="flex-1 bg-white">
             <Calendars
+                setData={setDateData}
                 dateNow={dateNow}
                 setDateNow={setDateNow}
             />
-            <ScrollView className="p-4">
+            <View className="p-4">
                 <View className="flex-row justify-between items-center">
                     <Text className="text-xl">{dateNow}</Text>
-                    <TouchableOpacity className="bg-cgreen rounded-full p-1">
+                    <TouchableOpacity
+                        className="bg-cgreen rounded-full p-1"
+                        onPress={()=>router.navigate("newCalendar")}
+                    >
                         <MaterialIcons size={28} name={"add"} color={"#FFF"} />
                     </TouchableOpacity>
                 </View>
@@ -52,7 +58,7 @@ export default function Calendar(){
                         </View>
                     }
                 />                
-            </ScrollView>
+            </View>
         </SafeAreaView>
     )
 }

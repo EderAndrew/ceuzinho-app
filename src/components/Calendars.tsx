@@ -13,17 +13,19 @@ LocaleConfig.locales['pt-br'] = {
 LocaleConfig.defaultLocale = 'pt-br'
 
 type Props = {
+    setData: (date: string) => void,
     dateNow: string,
     setDateNow: (date: string) => void
 }
 
-export const Calendars = ({setDateNow, dateNow}:Props) => {
+export const Calendars = ({setDateNow, dateNow, setData}:Props) => {
     const [selected, setSelected] = useState(new Date().toISOString().split('T')[0]);
     const vacation = {key: 'vacation', color: 'red', selectedDotColor: 'blue'};
     const massage = {key: 'massage', color: 'blue', selectedDotColor: 'blue'};
     const workout = {key: 'workout', color: 'green'};
 
     const handlerDate = (day: ICalendar) => {
+        setData(day.dateString);
         const [ano, mes, dia] = day.dateString.split("-").map(Number);
         const dataLocal = new Date(Date.UTC(ano, mes - 1, dia, 3, 0, 0));
         const fomatedDate = dataLocal.toLocaleString("pt-BR", {
@@ -58,7 +60,7 @@ export const Calendars = ({setDateNow, dateNow}:Props) => {
                 borderColor: "#FFF"
             }}
             markedDates={{
-                [`${selected}`]: {
+                [selected]: {
                     dots: [vacation, massage, workout],
                     selected: true, 
                     selectedColor: '#df1b7d'
