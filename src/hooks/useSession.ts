@@ -21,6 +21,7 @@ export const useSession = (user: IUser) => {
         phone: user.phone,
         photo: user.photoUrl,
         photoName: user.photo,
+        sex: user.sex,
         roleName: roleKey && roleKey in userRole ? userRole[roleKey as UserRoleKey] : "Usuário",
         color: user.bgColor
     }

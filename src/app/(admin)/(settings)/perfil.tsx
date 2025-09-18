@@ -9,7 +9,6 @@ import { LoadingComponent } from "@/components/LoadingComponent";
 import { useRouter } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { CameraModal } from "@/components/CameraModal";
-import { useCameraPermissions } from "expo-camera";
 
 export default function Perfil(){
     const { user } = useUser()
