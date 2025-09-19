@@ -1,4 +1,4 @@
-import { Modal, SafeAreaView, View, Text, TouchableOpacity } from "react-native"
+import { Modal, View, Text } from "react-native"
 import { ButtonComponent } from "./ButtonComponent"
 
 type Props = {

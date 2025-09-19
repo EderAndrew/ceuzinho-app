@@ -1,4 +1,6 @@
+import { useDate } from "@/hooks/useDate";
 import { ICalendar } from "@/interfaces/ICalendar";
+import { useDateStore } from "@/stores/DateStore";
 import { useState } from "react";
 import { StyleSheet } from "react-native";
 import { Calendar, LocaleConfig } from "react-native-calendars"
@@ -13,29 +15,22 @@ LocaleConfig.locales['pt-br'] = {
 LocaleConfig.defaultLocale = 'pt-br'
 
 type Props = {
-    setData: (date: string) => void,
-    dateNow: string,
-    setDateNow: (date: string) => void
+    setData: (date: string) => void
 }
 
-export const Calendars = ({setDateNow, dateNow, setData}:Props) => {
+export const Calendars = ({ setData }:Props) => {
     const [selected, setSelected] = useState(new Date().toISOString().split('T')[0]);
+    const { setDate } = useDateStore()
     const vacation = {key: 'vacation', color: 'red', selectedDotColor: 'blue'};
     const massage = {key: 'massage', color: 'blue', selectedDotColor: 'blue'};
     const workout = {key: 'workout', color: 'green'};
 
     const handlerDate = (day: ICalendar) => {
         setData(day.dateString);
-        const [ano, mes, dia] = day.dateString.split("-").map(Number);
-        const dataLocal = new Date(Date.UTC(ano, mes - 1, dia, 3, 0, 0));
-        const fomatedDate = dataLocal.toLocaleString("pt-BR", {
-                timeZone: "America/Sao_Paulo",
-                year: 'numeric', 
-                month: 'short', 
-                day: '2-digit'
-            }).split(", ")[0]
-
-        setDateNow(fomatedDate);
+        const formatedDate = new Date(day.dateString)
+        const stringDate = useDate(formatedDate)
+        
+        setDate(stringDate);
     }
 
     return (
