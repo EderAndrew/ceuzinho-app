@@ -7,14 +7,15 @@ import { useState } from "react";
 import { InputComponent } from "@/components/InputComponent";
 import { useDateStore } from "@/stores/DateStore";
 import { IFormCalendar } from "@/interfaces/IFormCalendar";
-import { DropDown } from "@/components/DropDown";
 import { Room } from "@/utils/room";
+import { PickerInput } from "@/components/PickerInput";
 
 export default function NewCalendar() {
     const router = useRouter();
     const [dateInfo, setDateInfo] = useState(new Date());
     const { date } = useDateStore()
     const [formCalendar, setFormCalendar] = useState<IFormCalendar>()
+    const [selectedRoomType, setSelectedRoomType] = useState("");
 
     const onChange = (_event: any, selectedDate: any) => {
         const currentDate = selectedDate
@@ -30,18 +31,10 @@ export default function NewCalendar() {
         })
     }
 
-    const showDatePicker = () => {
-        showMode('date')
-    }
-
     const showTimePicker = () => {
         showMode('time')
     }
 
-    const formattedRoom = Room.map((r) => ({
-        value: r.label,
-        label: r.label
-    }))
     return (
         <SafeAreaView className="flex-1 bg-white px-4">
             <View className="flex flex-row gap-4">
@@ -53,10 +46,12 @@ export default function NewCalendar() {
             <View className="flex mt-10 gap-4">
                 <View>
                     <Text className="text-xl">Sala</Text>
-                    <DropDown
-                        data={formattedRoom}
-                        onChange={console.log}
-                        placeholder="Selecione a Sala"
+                    <PickerInput
+                        selectInfoType={selectedRoomType}
+                        setSelectInfoType={setSelectedRoomType}
+                        infoObject={Room}
+                        labelKey="label"
+                        valueKey="value"
                     />
                 </View>
                 <View>
