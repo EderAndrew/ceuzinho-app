@@ -40,7 +40,6 @@ export const uploadImage = async(userId: string, file: RNFile, token: string) =>
 
 export const uploadPassword = async(payload: PasswordSchema, token: string) => {
     try{
-        console.log(payload)
         const resp = await api.put("/users/changePassword", {
             email: payload.email,
             oldPassword: payload.oldPwd,
@@ -53,6 +52,20 @@ export const uploadPassword = async(payload: PasswordSchema, token: string) => {
         })
 
         return {status: resp.status, message: resp.data}
+    }catch(error){
+        console.error(error)
+    }
+}
+
+export const allTeachers = async(token: string) => {
+    try{
+        const resp = await api.get("/users/all", {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+
+        return resp.data
     }catch(error){
         console.error(error)
     }

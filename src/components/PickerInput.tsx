@@ -25,7 +25,7 @@ export const PickerInput = <T extends Record<string, any>>({
                     onValueChange={(itemValue, itemIndex) =>
                         setSelectInfoType(itemValue as string)
                     }
-                    mode="dialog"
+                    mode="dropdown"
                 >
                     
                     {infoObject?.map((item) => (

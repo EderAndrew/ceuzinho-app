@@ -29,6 +29,9 @@ importers:
       expo-camera:
         specifier: ~17.0.7
         version: 17.0.7(expo@54.0.2)(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.12)(react@19.1.0))(react@19.1.0)
+      expo-checkbox:
+        specifier: ~5.0.7
+        version: 5.0.7(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.12)(react@19.1.0))(react@19.1.0)
       expo-constants:
         specifier: ~18.0.8
         version: 18.0.8(expo@54.0.2)(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.12)(react@19.1.0))
@@ -1806,6 +1809,16 @@ packages:
     resolution: {integrity: sha512-jdZfijfFjlVAuuIkDheA41YKpigPjqsN0juRvgyr7Lcyz+fvwZ3/RP50/n/hvuozH657wHxPfiyVVFa00z8TcQ==}
     peerDependencies:
       expo: '*'
+      react: '*'
+      react-native: '*'
+      react-native-web: '*'
+    peerDependenciesMeta:
+      react-native-web:
+        optional: true
+
+  expo-checkbox@5.0.7:
+    resolution: {integrity: sha512-oACH1MwJ5816ovT5bKQcaPr/5AAK3l+nlC9FxxAhtANXNBav+BjRJT1IqYTfp33b7+FMKx9ZkLmqJHfubolJrQ==}
+    peerDependencies:
       react: '*'
       react-native: '*'
       react-native-web: '*'
@@ -5755,6 +5768,11 @@ snapshots:
     dependencies:
       expo: 54.0.2(@babel/core@7.28.4)(@expo/metro-runtime@6.1.1)(expo-router@6.0.1)(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.12)(react@19.1.0))(react@19.1.0)
       invariant: 2.2.4
+      react: 19.1.0
+      react-native: 0.81.4(@babel/core@7.28.4)(@types/react@19.1.12)(react@19.1.0)
+
+  expo-checkbox@5.0.7(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.12)(react@19.1.0))(react@19.1.0):
+    dependencies:
       react: 19.1.0
       react-native: 0.81.4(@babel/core@7.28.4)(@types/react@19.1.12)(react@19.1.0)
 
