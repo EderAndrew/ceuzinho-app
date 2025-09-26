@@ -13,6 +13,7 @@ import { Checkbox } from 'expo-checkbox';
 import { allTeachers } from "@/api/service/user.service";
 import { useUser } from "@/stores/session";
 import { IUser } from "@/interfaces/IUser";
+import { ButtonComponent } from "@/components/ButtonComponent";
 
 export default function NewCalendar() {
     const router = useRouter();
@@ -57,64 +58,71 @@ export default function NewCalendar() {
                 </TouchableOpacity>
                 <Text className="w- text-3xl font-RobotoBold text-slate-700">{date}</Text>
             </View>
-            <View className="flex mt-10 gap-4">
-                <View>
-                    <Text className="text-xl">Sala</Text>
-                    <PickerInput
-                        selectInfoType={selectedRoomType}
-                        setSelectInfoType={setSelectedRoomType}
-                        infoObject={Room}
-                        labelKey="label"
-                        valueKey="value"
-                    />
-                </View>
-                <View>
-                    <Text className="text-xl">Tema</Text>
-                    <InputComponent
-                        placeholder="Titulo da matéria"
-                        hasIcon={false}
-                        value={formCalendar?.theme as string}
-                        onChangeText={(text) => console.log(text)}
-                        keyboardType="default"
-                    />
-                </View>
-                <View>
-                    <Text className="text-xl">Periodo</Text>
-                    <PickerInput
-                        selectInfoType={selectedRoomType}
-                        setSelectInfoType={setSelectedRoomType}
-                        infoObject={Room}
-                        labelKey="label"
-                        valueKey="value"
-                    />
-                </View>
-                <View className="gap-3">
-                    <Text className="text-xl">Professores</Text>
-                    <FlatList
-                        data = {teachers}
-                        renderItem={({item})=>(
-                            <View className="flex flex-row items-center gap-2 mb-4">
-                                <Checkbox
-                                    style={{width: 24, height: 24}}
-                                    value={isChecked}
-                                    onValueChange = {() => setChecked(!isChecked)}
-                                />
-                                <View className="w-8 h-8 rounded-full bg-slate-400 border">
-                                    {item.photoUrl && (
-                                        <Image 
-                                            source={{ uri: item?.photoUrl }}
-                                            className="w-full h-full rounded-full"
-                                            resizeMode="cover"
-                                        />
-                                    )}
-                                    
+            <View className="flex h-full mt-10 gap-4">
+                <View className="gap-4">
+                    <View>
+                        <Text className="text-xl">Sala</Text>
+                        <PickerInput
+                            selectInfoType={selectedRoomType}
+                            setSelectInfoType={setSelectedRoomType}
+                            infoObject={Room}
+                            labelKey="label"
+                            valueKey="value"
+                        />
+                    </View>
+                    <View>
+                        <Text className="text-xl">Tema</Text>
+                        <InputComponent
+                            placeholder="Titulo da matéria"
+                            hasIcon={false}
+                            value={formCalendar?.theme as string}
+                            onChangeText={(text) => console.log(text)}
+                            keyboardType="default"
+                        />
+                    </View>
+                    <View>
+                        <Text className="text-xl">Periodo</Text>
+                        <PickerInput
+                            selectInfoType={selectedRoomType}
+                            setSelectInfoType={setSelectedRoomType}
+                            infoObject={Room}
+                            labelKey="label"
+                            valueKey="value"
+                        />
+                    </View>
+                    <View className="gap-3">
+                        <Text className="text-xl">Professores</Text>
+                        <FlatList
+                            data = {teachers}
+                            renderItem={({item})=>(
+                                <View className="flex flex-row items-center gap-2 mb-4">
+                                    <Checkbox
+                                        style={{width: 24, height: 24}}
+                                        value={isChecked}
+                                        onValueChange = {() => setChecked(!isChecked)}
+                                    />
+                                    <View className="w-8 h-8 rounded-full bg-slate-400 border">
+                                        {item.photoUrl && (
+                                            <Image 
+                                                source={{ uri: item?.photoUrl }}
+                                                className="w-full h-full rounded-full"
+                                                resizeMode="cover"
+                                            />
+                                        )}
+                                        
+                                    </View>
+                                    <Text className="text-xl">{item.name}</Text>
                                 </View>
-                                <Text className="text-xl">{item.name}</Text>
-                            </View>
-                        )}
-                        keyExtractor={(item) => item.id.toString()}
-                    />    
+                            )}
+                            keyExtractor={(item) => item.id.toString()}
+                        />    
+                    </View>
                 </View>
+                <ButtonComponent
+                    bgColor="bg-acquaBlue"
+                    title="Salvar"
+                    handleLogin={()=>{}}
+                />
             </View>
         </SafeAreaView>
     )

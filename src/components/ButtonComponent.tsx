@@ -9,7 +9,7 @@ type Props = {
 export const ButtonComponent = ({ bgColor, handleLogin, title }:Props) => {
     return(
         <TouchableOpacity
-            className={`w-96 h-14 flex justify-center items-center rounded-lg ${bgColor}`}
+            className={`w-96 h-14 flex justify-center items-center rounded-lg m-auto ${bgColor}`}
             onPress={handleLogin}
         >
             <Text className="font-RobotoRegular text-white font-normal text-xl">{title}</Text>
