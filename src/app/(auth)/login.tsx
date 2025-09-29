@@ -8,10 +8,13 @@ import { useRouter } from "expo-router";
 import { useUser } from "@/stores/session";
 import { ButtonComponent } from "@/components/ButtonComponent";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { LoadingComponent } from "@/components/LoadingComponent";
+import { useLoading } from "@/stores/loading";
 
 export default function Login(){
     const router = useRouter()
     const { setUser, setToken } = useUser()
+    const {setLoad} = useLoading()
     
     const [message, setMessage] = useState("")
     const [form, setForm] = useState<LoginSchema>({
@@ -22,22 +25,28 @@ export default function Login(){
     const logoImage = require("@/assets/images/logo.png")
     
     const handleLogin = async() => {
+        setLoad(true)
         setMessage("")
         const data: ILogin = await signIn(form)
 
         if(data.error){
+            setLoad(false)
             setMessage(data.message)
             return
         }
 
         const resp = await userSession(data.token!)
 
-        if(!resp) return setMessage("Erro inesperado.")
+        if(!resp){
+            setLoad(false)
+            return setMessage("Erro inesperado.")
+        }
         
         setToken(data.token as string)
         setUser([resp.user])
 
         router.replace('/(admin)/calendar')
+        setLoad(false)
 
     }
     const ErrorMessage = message.length > 0 ? <Text className="font-RobotoSemibold text-xl text-red-700 text-center mt-5">{message}</Text> : ""
@@ -84,6 +93,7 @@ export default function Login(){
                 />
                 <Text className="text-white text-sm mb-5">V1.0 Calendar</Text>
             </View>
+            <LoadingComponent />
         </SafeAreaView>
     )
 }

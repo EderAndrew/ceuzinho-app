@@ -102,7 +102,7 @@ export default function ChangePassword(){
                     </View>
                     <Text className="m-auto mt-8 font-RobotoBold text-xl text-red-600">{errorMessage}</Text>
                 </View>
-                <TouchableOpacity onPress={handleChangePassword}>
+                <TouchableOpacity onPress={handleChangePassword} className="m-auto">
                     <Text className="bg-bcgreen text-xl font-RobotoSemibold">Trocar</Text>
                 </TouchableOpacity>                
             </View>

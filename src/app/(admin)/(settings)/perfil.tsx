@@ -63,7 +63,7 @@ export default function Perfil(){
                     </View>
                 </View>            
                 <TouchableOpacity
-                    className="flex items-center justify-centerw-60 p-2 rounded-full"
+                    className="flex m-auto"
                 >
                     <Text className="text-darkPink font-RobotoSemibold text-xl">Sair</Text>
                 </TouchableOpacity>

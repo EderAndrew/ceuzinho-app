@@ -6,8 +6,7 @@ import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import React, { useEffect, useState } from "react";
 import { InputComponent } from "@/components/InputComponent";
 import { useDateStore } from "@/stores/DateStore";
-import { IFormCalendar } from "@/interfaces/IFormCalendar";
-import { Room } from "@/utils/room";
+import { Periods, Room } from "@/utils/room";
 import { PickerInput } from "@/components/PickerInput";
 import { Checkbox } from 'expo-checkbox';
 import { allTeachers } from "@/api/service/user.service";
@@ -20,28 +19,18 @@ export default function NewCalendar() {
     const { token } = useUser()
     const [dateInfo, setDateInfo] = useState(new Date());
     const { date } = useDateStore()
-    const [formCalendar, setFormCalendar] = useState<IFormCalendar>()
     const [teachers, setTeachers] = useState<IUser[]>([])
+    const [theme, setTheme] = useState("")
     const [selectedRoomType, setSelectedRoomType] = useState("");
-    const [isChecked, setChecked] = useState(false);
+    const [selectedIds, setSelectedIds] = useState<number[]>([]);
+    const [selectedPeriodsType, setSelectedPeriodsType] = useState("")
 
-    const onChange = (_event: any, selectedDate: any) => {
-        const currentDate = selectedDate
-        setDateInfo(currentDate)
-    }
+    const toggleCheckbox = (id: number) => {
+        setSelectedIds((prev) =>
+            prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]
+        );
+    };
 
-    const showMode = (currentMode: any) => {
-        DateTimePickerAndroid.open({
-            value: dateInfo,
-            onChange,
-            mode: currentMode,
-            is24Hour: true
-        })
-    }
-
-    const showTimePicker = () => {
-        showMode('time')
-    }
 
     useEffect(()=>{
         (async()=>{
@@ -49,6 +38,20 @@ export default function NewCalendar() {
             setTeachers(data.users)
         })()
     },[])
+
+    const handlerCalendar = async() => {
+        const payload = {
+            date: new Date(dateInfo).toISOString(),
+            period: selectedPeriodsType,
+            tema: theme,
+            createdBy: 0,
+            teatcherOne: selectedIds[0] || null,
+            teatcherTwo: selectedIds[1] || null,
+            room: selectedRoomType
+        }
+
+        console.log("PAYLOAD: ", payload)
+    }
 
     return (
         <SafeAreaView className="flex-1 bg-white px-4">
@@ -75,17 +78,17 @@ export default function NewCalendar() {
                         <InputComponent
                             placeholder="Titulo da matéria"
                             hasIcon={false}
-                            value={formCalendar?.theme as string}
-                            onChangeText={(text) => console.log(text)}
+                            value={theme}
+                            onChangeText={(text) => setTheme(text)}
                             keyboardType="default"
                         />
                     </View>
                     <View>
                         <Text className="text-xl">Periodo</Text>
                         <PickerInput
-                            selectInfoType={selectedRoomType}
-                            setSelectInfoType={setSelectedRoomType}
-                            infoObject={Room}
+                            selectInfoType={selectedPeriodsType}
+                            setSelectInfoType={setSelectedPeriodsType}
+                            infoObject={Periods}
                             labelKey="label"
                             valueKey="value"
                         />
@@ -98,8 +101,8 @@ export default function NewCalendar() {
                                 <View className="flex flex-row items-center gap-2 mb-4">
                                     <Checkbox
                                         style={{width: 24, height: 24}}
-                                        value={isChecked}
-                                        onValueChange = {() => setChecked(!isChecked)}
+                                        value={selectedIds.includes(item.id)}
+                                        onValueChange = {() => toggleCheckbox(item.id)}
                                     />
                                     <View className="w-8 h-8 rounded-full bg-slate-400 border">
                                         {item.photoUrl && (
@@ -118,11 +121,12 @@ export default function NewCalendar() {
                         />    
                     </View>
                 </View>
-                <ButtonComponent
-                    bgColor="bg-acquaBlue"
-                    title="Salvar"
-                    handleLogin={()=>{}}
-                />
+                <TouchableOpacity
+                    className="flex m-auto"
+                    onPress={handlerCalendar}
+                >
+                    <Text className="text-darkPink font-RobotoSemibold text-xl">Salvar</Text>
+                </TouchableOpacity>
             </View>
         </SafeAreaView>
     )
