@@ -20,7 +20,7 @@ type Props = {
 
 export const Calendars = ({ setData }:Props) => {
     const [selected, setSelected] = useState(new Date().toISOString().split('T')[0]);
-    const { setDate } = useDateStore()
+    const { setDate, setCorrectedDate } = useDateStore()
     const vacation = {key: 'vacation', color: 'red', selectedDotColor: 'blue'};
     const massage = {key: 'massage', color: 'blue', selectedDotColor: 'blue'};
     const workout = {key: 'workout', color: 'green'};
@@ -30,6 +30,7 @@ export const Calendars = ({ setData }:Props) => {
         const formatedDate = new Date(day.dateString)
         const stringDate = useDate(formatedDate)
         
+        setCorrectedDate(day.dateString)
         setDate(stringDate);
     }
 

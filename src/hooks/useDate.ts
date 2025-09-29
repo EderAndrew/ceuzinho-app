@@ -33,6 +33,6 @@ export const useDate = (date: Date) => {
     const yearName = monthYear[month]
     
     const dateFormated = `${dayName}, ${dayNumber} ${yearName}`
-    console.log(dateFormated)
+
     return dateFormated
 }

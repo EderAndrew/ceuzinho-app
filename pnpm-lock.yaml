@@ -59,6 +59,9 @@ importers:
       expo-status-bar:
         specifier: ~3.0.7
         version: 3.0.8(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.12)(react@19.1.0))(react@19.1.0)
+      expo-system-ui:
+        specifier: ~6.0.7
+        version: 6.0.7(expo@54.0.2)(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.12)(react@19.1.0))
       nativewind:
         specifier: ^4.1.23
         version: 4.2.0(react-native-reanimated@4.1.0(@babel/core@7.28.4)(react-native-worklets@0.5.1(@babel/core@7.28.4)(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.12)(react@19.1.0))(react@19.1.0))(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.12)(react@19.1.0))(react@19.1.0))(react-native-safe-area-context@5.6.1(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.12)(react@19.1.0))(react@19.1.0))(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.12)(react@19.1.0))(react@19.1.0)(tailwindcss@3.4.17)
@@ -1931,6 +1934,16 @@ packages:
     peerDependencies:
       react: '*'
       react-native: '*'
+
+  expo-system-ui@6.0.7:
+    resolution: {integrity: sha512-NT+/r/BOg08lFI9SZO2WFi9X1ZmawkVStknioWzQq6Mt4KinoMS6yl3eLbyOLM3LoptN13Ywfo4W5KHA6TV9Ow==}
+    peerDependencies:
+      expo: '*'
+      react-native: '*'
+      react-native-web: '*'
+    peerDependenciesMeta:
+      react-native-web:
+        optional: true
 
   expo@54.0.2:
     resolution: {integrity: sha512-0YcsvMuiZlVFVZRdD4PlhwsYrTmcN1qm5b1IRSLIeLZjH6ZnQwBb3KBSnK8WRC9V6EUPSbuLGpNT5AEewrtakQ==}
@@ -5895,6 +5908,15 @@ snapshots:
       react: 19.1.0
       react-native: 0.81.4(@babel/core@7.28.4)(@types/react@19.1.12)(react@19.1.0)
       react-native-is-edge-to-edge: 1.2.1(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.12)(react@19.1.0))(react@19.1.0)
+
+  expo-system-ui@6.0.7(expo@54.0.2)(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.12)(react@19.1.0)):
+    dependencies:
+      '@react-native/normalize-colors': 0.81.4
+      debug: 4.4.1
+      expo: 54.0.2(@babel/core@7.28.4)(@expo/metro-runtime@6.1.1)(expo-router@6.0.1)(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.12)(react@19.1.0))(react@19.1.0)
+      react-native: 0.81.4(@babel/core@7.28.4)(@types/react@19.1.12)(react@19.1.0)
+    transitivePeerDependencies:
+      - supports-color
 
   expo@54.0.2(@babel/core@7.28.4)(@expo/metro-runtime@6.1.1)(expo-router@6.0.1)(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.12)(react@19.1.0))(react@19.1.0):
     dependencies:

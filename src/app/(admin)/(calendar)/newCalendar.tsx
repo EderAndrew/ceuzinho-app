@@ -1,8 +1,7 @@
 import { SafeAreaView } from "react-native-safe-area-context";
-import { FlatList, Text, TouchableOpacity, View, Image } from "react-native";
+import { FlatList, Text, TouchableOpacity, View, Image, Alert } from "react-native";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons"
 import { useRouter } from "expo-router";
-import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import React, { useEffect, useState } from "react";
 import { InputComponent } from "@/components/InputComponent";
 import { useDateStore } from "@/stores/DateStore";
@@ -12,18 +11,20 @@ import { Checkbox } from 'expo-checkbox';
 import { allTeachers } from "@/api/service/user.service";
 import { useUser } from "@/stores/session";
 import { IUser } from "@/interfaces/IUser";
-import { ButtonComponent } from "@/components/ButtonComponent";
+import { createSchedule } from "@/api/service/schedules.service";
+import { LoadingComponent } from "@/components/LoadingComponent";
+import { useLoading } from "@/stores/loading";
 
 export default function NewCalendar() {
     const router = useRouter();
-    const { token } = useUser()
-    const [dateInfo, setDateInfo] = useState(new Date());
-    const { date } = useDateStore()
+    const { user, token } = useUser()
+    const { date, correctedDate } = useDateStore()
     const [teachers, setTeachers] = useState<IUser[]>([])
     const [theme, setTheme] = useState("")
-    const [selectedRoomType, setSelectedRoomType] = useState("");
+    const [selectedRoomType, setSelectedRoomType] = useState("Maternal");
     const [selectedIds, setSelectedIds] = useState<number[]>([]);
-    const [selectedPeriodsType, setSelectedPeriodsType] = useState("")
+    const [selectedPeriodsType, setSelectedPeriodsType] = useState("Manhã")
+    const {setLoad} = useLoading()
 
     const toggleCheckbox = (id: number) => {
         setSelectedIds((prev) =>
@@ -31,26 +32,54 @@ export default function NewCalendar() {
         );
     };
 
-
     useEffect(()=>{
         (async()=>{
-            const data = await allTeachers(token as string)
-            setTeachers(data.users)
+            try{
+                const data = await allTeachers(token as string)
+                setTeachers(data.users)
+            }catch(error){
+                Alert.alert("Erro ao carregar os professores.")
+            }
         })()
     },[])
 
-    const handlerCalendar = async() => {
-        const payload = {
-            date: new Date(dateInfo).toISOString(),
-            period: selectedPeriodsType,
-            tema: theme,
-            createdBy: 0,
-            teatcherOne: selectedIds[0] || null,
-            teatcherTwo: selectedIds[1] || null,
-            room: selectedRoomType
+    const validateFields = () => {
+        if (!theme.trim()) {
+        Alert.alert("Campo obrigatório", "Informe o tema da aula.");
+        return false;
         }
+        if (selectedIds.length === 0) {
+        Alert.alert("Campo obrigatório", "Selecione pelo menos um professor.");
+        return false;
+        }
+        return true;
+    };
 
-        console.log("PAYLOAD: ", payload)
+
+    const handlerCalendar = async() => {
+        if (!validateFields()) return;
+
+        setLoad(true)
+        try{
+             const payload = {
+                date: correctedDate,
+                period: selectedPeriodsType,
+                tema: theme,
+                scheduleType: "CEUZINHO",
+                createdBy: user?.[0].id,
+                teatcherOne: selectedIds[0] || null,
+                teatcherTwo: selectedIds[1] || null,
+                room: selectedRoomType
+            }
+
+            await createSchedule(payload, token as string)
+
+            router.back()
+        }catch(error){
+           Alert.alert("Erro", "Não foi possível salvar o agendamento.");
+        }finally{
+            setLoad(false)
+        }
     }
 
     return (
@@ -128,6 +157,7 @@ export default function NewCalendar() {
                     <Text className="text-darkPink font-RobotoSemibold text-xl">Salvar</Text>
                 </TouchableOpacity>
             </View>
+            <LoadingComponent />
         </SafeAreaView>
     )
 }
