@@ -23,6 +23,18 @@ export interface ISchedules{
     teatcherTwoUser: ICreatedUser,
 }
 
+export interface ISchedulesPaylod{
+    date: string,
+    period: string,
+    scheduleType: string,
+    tema: string,
+    info?: string,
+    createdBy: number,
+    teatcherOne?: number | null,
+    teatcherTwo?: number | null,
+    room: string
+}
+
 interface ICreatedUser{
     id: number,
     photo?: string,

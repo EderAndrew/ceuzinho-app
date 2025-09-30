@@ -14,6 +14,7 @@ import { IUser } from "@/interfaces/IUser";
 import { createSchedule } from "@/api/service/schedules.service";
 import { LoadingComponent } from "@/components/LoadingComponent";
 import { useLoading } from "@/stores/loading";
+import { ISchedulesPaylod } from "@/interfaces/ISchedules";
 
 export default function NewCalendar() {
     const router = useRouter();
@@ -52,6 +53,10 @@ export default function NewCalendar() {
         Alert.alert("Campo obrigatório", "Selecione pelo menos um professor.");
         return false;
         }
+        if(selectedIds.length > 2){
+            Alert.alert("Limite excedido", "Você pode selecionar no máximo dois professores.");
+            return false;
+        }
         return true;
     };
 
@@ -65,12 +70,13 @@ export default function NewCalendar() {
                 date: correctedDate,
                 period: selectedPeriodsType,
                 tema: theme,
+                info: "Aguardando",
                 scheduleType: "CEUZINHO",
                 createdBy: user?.[0].id,
                 teatcherOne: selectedIds[0] || null,
                 teatcherTwo: selectedIds[1] || null,
                 room: selectedRoomType
-            }
+            } as ISchedulesPaylod
 
             await createSchedule(payload, token as string)
 

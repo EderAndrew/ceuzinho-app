@@ -1,63 +1,87 @@
-import { Calendars } from "@/components/Calendars";
 import { useEffect, useState } from "react";
-import { View, Text, TouchableOpacity, FlatList } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  FlatList,
+  Alert,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons"
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+
+import { Calendars } from "@/components/Calendars";
 import { DateCard } from "@/components/DateCard";
 import { ISchedules } from "@/interfaces/ISchedules";
+
 import { useUser } from "@/stores/session";
-import { getSchedulesByDate } from "@/api/service/schedules.service";
-import { useRouter } from "expo-router";
-import { useDate } from "@/hooks/useDate";
 import { useDateStore } from "@/stores/DateStore";
+import { useRouter } from "expo-router";
+
+import { getSchedulesByDate } from "@/api/service/schedules.service";
+import { useDate } from "@/hooks/useDate";
 import { CompareDate } from "@/hooks/compareDate";
 
+
 export default function Calendar(){
-    const [schedules, setSchedules] = useState<ISchedules[]>([])
-    const [dateData, setDateData] = useState(new Date().toISOString().split("T")[0])
-    const [dateNow, setDateNow] = useState(new Date());
-    const [dataHasTrue, setDataHasTrue] = useState<boolean>(false)
-    const { token } = useUser()
-    const { date, setDate } = useDateStore()
-    const router = useRouter()
+    const [schedules, setSchedules] = useState<ISchedules[]>([]);
+    const [selectedDate, setSelectedDate] = useState(
+        new Date().toISOString().split("T")[0]
+    );
+    const [isFutureDate, setIsFutureDate] = useState(false);
+
+    const currentDate = new Date();
+    const { token } = useUser();
+    const { date, setDate } = useDateStore();
+    const router = useRouter();
+
         
-    useEffect(()=>{
-        (async()=>{
-            const data = await getSchedulesByDate(dateData, token as string)
-            if(!data) return
+    // Atualiza data formatada no store
+    useEffect(() => {
+        const formattedDate = useDate(currentDate);
+        setDate(formattedDate);
+    }, []);
 
-            setSchedules(data.data)
-        })()
-    },[dateData])
+    // Verifica se a data selecionada é futura
+    useEffect(() => {
+        const result = CompareDate(currentDate, selectedDate);
+        setIsFutureDate(result);
+    }, [selectedDate]);
 
-    useEffect(()=>{
-        (()=>{
-            const d = useDate(dateNow)
-            setDate(d)
-        })()
-    },[])
+    // Busca agendamentos da data selecionada
+    useEffect(() => {
+        const fetchSchedules = async () => {
+            try {
+                const response = await getSchedulesByDate(selectedDate, token as string);
+                if (!response?.data) {
+                    setSchedules([]);
+                    return 
+                }
 
-    useEffect(()=>{
-        (()=>{
-            const compare = CompareDate(dateNow, dateData)
-            setDataHasTrue(compare)
-        })()
-    },[dateData])
+                setSchedules(response.data);
+            } catch (error) {
+                Alert.alert("Erro", "Não foi possível carregar os agendamentos.");
+            }
+        }
 
+        fetchSchedules();
+    }, [selectedDate]);
+
+    const handleAddSchedule = () => {
+        if (!isFutureDate) return;
+        router.navigate("newCalendar");
+    };
+    
     return(
         <SafeAreaView className="flex-1 bg-white">
             <Calendars
-                setData={setDateData}
+                setData={setSelectedDate}
             />
             <View className="p-4">
                 <View className="flex-row justify-between items-center">
                     <Text className="text-xl">{date}</Text>
                     <TouchableOpacity
-                        className={`${dataHasTrue ? "bg-cgreen" : "bg-slate-400"} rounded-full p-1`}
-                        onPress={()=>{
-                            if(!dataHasTrue) return
-                            router.navigate("newCalendar")
-                        }}
+                        className={`${isFutureDate ? "bg-cgreen" : "bg-slate-400"} rounded-full p-1`}
+                        onPress={handleAddSchedule}
                     >
                         <MaterialIcons size={28} name={"add"} color={"#FFF"} />
                     </TouchableOpacity>

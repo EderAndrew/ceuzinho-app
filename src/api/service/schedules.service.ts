@@ -1,6 +1,8 @@
+import { ISchedulesPaylod } from "@/interfaces/ISchedules"
 import { api } from "../connection"
 
 const url = process.env.EXPO_PUBLIC_URL
+
 
 export const getSchedulesByDate = async(date: string, token: string) => {
     try{
@@ -16,7 +18,7 @@ export const getSchedulesByDate = async(date: string, token: string) => {
     }
 }
 
-export const createSchedule = async(payload: any, token: string) => {
+export const createSchedule = async(payload: ISchedulesPaylod, token: string):Promise<any> => {
     try{
         const response = await api.post(`${url}/schedules/createSchedule`, payload,{
             headers: {
@@ -26,6 +28,7 @@ export const createSchedule = async(payload: any, token: string) => {
 
         return response.data
     }catch(error){
-        console.error(error)
+        console.error("Erro ao criar agendamento:", error);
+        throw error; // ou retorne { success: false, error }
     }
 }
