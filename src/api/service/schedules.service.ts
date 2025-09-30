@@ -6,7 +6,7 @@ const url = process.env.EXPO_PUBLIC_URL
 
 export const getSchedulesByDate = async(date: string, token: string) => {
     try{
-        const response = await api.get(`${url}/schedules/schedules/${date}`,{
+        const response = await api.get(`/schedules/schedules/${date}`,{
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -20,8 +20,9 @@ export const getSchedulesByDate = async(date: string, token: string) => {
 
 export const createSchedule = async(payload: ISchedulesPaylod, token: string):Promise<any> => {
     try{
-        const response = await api.post(`${url}/schedules/createSchedule`, payload,{
+        const response = await api.post(`/schedules/createSchedule`, payload,{
             headers: {
+                'Content-Type': 'multipart/form-data',
                 Authorization: `Bearer ${token}`
             }
         })

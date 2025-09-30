@@ -61,7 +61,9 @@ export const Calendars = ({ setData }:Props) => {
                     selected: true, 
                     selectedColor: '#df1b7d'
                 },
-                '2025-09-17': {dots: [massage, workout], disabled: true}
+                '2025-10-16': {dots: [massage, workout], selected: true, selectedColor: '#7a9b44'},
+                '2025-10-19': {dots: [massage, workout], selected: true, selectedColor: '#7a9b44'},
+                '2025-10-28': {dots: [massage, workout], selected: true, selectedColor: '#7a9b44'}
             }}
             onDayPress={day => {
                handlerDate(day)

@@ -70,11 +70,10 @@ export default function NewCalendar() {
                 date: correctedDate,
                 period: selectedPeriodsType,
                 tema: theme,
-                info: "Aguardando",
                 scheduleType: "CEUZINHO",
                 createdBy: user?.[0].id,
-                teatcherOne: selectedIds[0] || null,
-                teatcherTwo: selectedIds[1] || null,
+                teacherOne: selectedIds[0] || null,
+                teacherTwo: selectedIds[1] || null,
                 room: selectedRoomType
             } as ISchedulesPaylod
 

@@ -1,3 +1,10 @@
+enum Status{
+    AGUARDANDO = "Aguardando",
+    AULA = "Aula",
+    FINALIZADO = "Finalizado",
+    CANCELADO = "Cancelado"
+}
+
 export interface ISchedules{
     id: number,
     date: string
@@ -7,10 +14,11 @@ export interface ISchedules{
     scheduleType: string,
     room: string,
     tema: string,
+    status: Status,
     info?: string,
     createdBy: number,
-    teatcherOne?: number,
-    teatcherTwo?: number,
+    teacherOne?: number,
+    teacherTwo?: number,
     ministratorOne?: number,
     ministratorTwo: number,
     document?: string,
@@ -19,8 +27,8 @@ export interface ISchedules{
     createdAt: string,
     updatedAt?: string,
     createdByUser: ICreatedUser,
-    teatcherOneUser: ICreatedUser,
-    teatcherTwoUser: ICreatedUser,
+    teacherOneUser: ICreatedUser,
+    teacherTwoUser: ICreatedUser,
 }
 
 export interface ISchedulesPaylod{
@@ -30,8 +38,8 @@ export interface ISchedulesPaylod{
     tema: string,
     info?: string,
     createdBy: number,
-    teatcherOne?: number | null,
-    teatcherTwo?: number | null,
+    teacherOne?: number | null,
+    teacherTwo?: number | null,
     room: string
 }
 

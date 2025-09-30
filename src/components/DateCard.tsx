@@ -12,22 +12,22 @@ export const DateCard = ({data}: Props) => {
             <View className={`bg-[#7a9b44] p-2 rounded-tl-lg rounded-bl-lg justify-center items-center`}>
                 <Text className="text-white font-semibold text-xl">{data.timeStart}</Text>
                 <Text className="text-white font-semibold text-xl">{data.timeEnd}</Text>
-                <Text className="text-white font-semibold text-xl">Finalizado</Text>
+                <Text className="text-white font-semibold text-xl">{data.status.toLowerCase()}</Text>
             </View>
             <View className="flex-1 ml-4 justify-around gap-2">
                 <Text className="font-semibold text-lg">{data.tema}</Text>
                 <View className="flex-1 flex-row gap-2">
                     <View className="flex-row relative">
                         <View className="absolute z-10 top-0 left-0 w-10 h-10 bg-slate-500 rounded-full border">
-                            <Image source={{uri: `${data.teatcherOneUser.photoUrl}`}} className="w-10 h-10 rounded-full border" />
+                            <Image source={{uri: `${data.teacherOneUser.photoUrl}`}} className="w-10 h-10 rounded-full border" />
                         </View>
                         <View className="absolute z-0 top-0 left-6 w-10 h-10 bg-slate-500 rounded-full border">
-                            <Image source={{uri: `${data.teatcherTwoUser.photoUrl}`}} className="w-10 h-10 rounded-full border" />
+                            <Image source={{uri: `${data.teacherTwoUser.photoUrl}`}} className="w-10 h-10 rounded-full border" />
                         </View>
                     </View>
                     <View className="ml-16">
-                        <Text>{data.teatcherOneUser.name}</Text>
-                        <Text>{data.teatcherTwoUser.name}</Text>
+                        <Text>{data.teacherOneUser.name}</Text>
+                        <Text>{data.teacherTwoUser.name}</Text>
                     </View>
                 </View>
                 <View className="flex-row justify-between items-center">
