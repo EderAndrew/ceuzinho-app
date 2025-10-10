@@ -1,7 +1,8 @@
 import { useDate } from "@/hooks/useDate";
 import { ICalendar } from "@/interfaces/ICalendar";
 import { useDateStore } from "@/stores/DateStore";
-import { useState } from "react";
+import { LocalDate } from "@/utils/localDate";
+import { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
 import { Calendar, LocaleConfig } from "react-native-calendars"
 
@@ -19,7 +20,7 @@ type Props = {
 }
 
 export const Calendars = ({ setData }:Props) => {
-    const [selected, setSelected] = useState(new Date().toISOString().split('T')[0]);
+    const [selected, setSelected] = useState(LocalDate());
     const { setDate, setCorrectedDate } = useDateStore()
     const vacation = {key: 'vacation', color: 'red', selectedDotColor: 'blue'};
     const massage = {key: 'massage', color: 'blue', selectedDotColor: 'blue'};

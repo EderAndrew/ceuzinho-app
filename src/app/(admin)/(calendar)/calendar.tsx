@@ -4,8 +4,10 @@ import {
   Text,
   TouchableOpacity,
   FlatList,
-  Alert,
+  Alert
 } from "react-native";
+import { StatusBar } from 'expo-status-bar';
+
 import { SafeAreaView } from "react-native-safe-area-context";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
@@ -97,6 +99,7 @@ export default function Calendar(){
                     }
                 />                
             </View>
+            <StatusBar style="dark" backgroundColor="#009cd9" />
         </SafeAreaView>
     )
 }

@@ -10,6 +10,7 @@ import { ButtonComponent } from "@/components/ButtonComponent";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { LoadingComponent } from "@/components/LoadingComponent";
 import { useLoading } from "@/stores/loading";
+import { StatusBar } from 'expo-status-bar';
 
 export default function Login(){
     const router = useRouter()
@@ -94,6 +95,7 @@ export default function Login(){
                 <Text className="text-white text-sm mb-5">V1.0 Calendar</Text>
             </View>
             <LoadingComponent />
+            <StatusBar style="inverted" backgroundColor="#ffffff" />
         </SafeAreaView>
     )
 }

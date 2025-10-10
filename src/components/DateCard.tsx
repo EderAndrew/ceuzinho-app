@@ -9,7 +9,8 @@ export const DateCard = ({data}: Props) => {
     
     return (
         <View className="w-full flex-row bg-[#E9E9E9] mt-4 border border-slate-400 rounded-lg">
-            <View className={`bg-[#7a9b44] p-2 rounded-tl-lg rounded-bl-lg justify-center items-center`}>
+            <View className={`p-2 rounded-tl-lg rounded-bl-lg justify-center items-center`}
+                style={{ backgroundColor: data.bgColor, borderTopLeftRadius: 6, borderBottomLeftRadius: 6 }}>
                 <Text className="text-white font-semibold text-xl">{data.timeStart}</Text>
                 <Text className="text-white font-semibold text-xl">{data.timeEnd}</Text>
                 <Text className="text-white font-semibold text-xl">{data.status.toLowerCase()}</Text>
@@ -31,7 +32,7 @@ export const DateCard = ({data}: Props) => {
                     </View>
                 </View>
                 <View className="flex-row justify-between items-center">
-                    <Text>Periodo da {data.period}</Text>
+                    <Text>Periodo da {data.period.toLowerCase()}</Text>
                     <View className="flex-row justify-between items-center gap-2">
                         <TouchableOpacity>
                             <MaterialIcons size={24} name={"edit"} color={"#9F9D9E"} />
