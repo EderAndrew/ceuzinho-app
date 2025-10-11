@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -17,23 +17,27 @@ import { ISchedules } from "@/interfaces/ISchedules";
 
 import { useUser } from "@/stores/session";
 import { useDateStore } from "@/stores/DateStore";
-import { useRouter } from "expo-router";
+import { useFocusEffect, useRouter } from "expo-router";
 
-import { getSchedulesByDate } from "@/api/service/schedules.service";
+import { getScheduleByMonthAndUserId, getSchedulesByDate } from "@/api/service/schedules.service";
 import { useDate } from "@/hooks/useDate";
 import { CompareDate } from "@/hooks/compareDate";
+import { LocalDate } from "@/utils/localDate";
+import { LoadingComponent } from "@/components/LoadingComponent";
+import { useLoading } from "@/stores/loading";
+import { monthConvert } from "@/utils/monthConvert";
 
 
 export default function Calendar(){
     const [schedules, setSchedules] = useState<ISchedules[]>([]);
-    const [selectedDate, setSelectedDate] = useState(
-        new Date().toISOString().split("T")[0]
-    );
+    const [selectedDate, setSelectedDate] = useState(LocalDate());
     const [isFutureDate, setIsFutureDate] = useState(false);
+    const [markedMonth, setMarkedMonth] = useState<Record<string, any>>({})
 
     const currentDate = new Date();
-    const { token } = useUser();
+    const { user, token } = useUser();
     const { date, setDate } = useDateStore();
+    const {setLoad} = useLoading()
     const router = useRouter();
 
         
@@ -50,33 +54,68 @@ export default function Calendar(){
     }, [selectedDate]);
 
     // Busca agendamentos da data selecionada
-    useEffect(() => {
-        const fetchSchedules = async () => {
-            try {
-                const response = await getSchedulesByDate(selectedDate, token as string);
-                if (!response?.data) {
+    useFocusEffect(
+        useCallback(() => {
+            
+            const fetchSchedules = async () => {
+                try {
+                    const response = await getSchedulesByDate(selectedDate, token as string);
+                    if (!response?.data) {
                     setSchedules([]);
-                    return 
+                    return;
+                    }
+
+                    setSchedules(response.data);
+                } catch (error) {
+                    Alert.alert("Erro", "Não foi possível carregar os agendamentos.");
                 }
+            };
 
-                setSchedules(response.data);
-            } catch (error) {
-                Alert.alert("Erro", "Não foi possível carregar os agendamentos.");
-            }
-        }
+            fetchSchedules();
+        }, [selectedDate])
+    );
 
-        fetchSchedules();
-    }, [selectedDate]);
 
     const handleAddSchedule = () => {
         if (!isFutureDate) return;
         router.navigate("newCalendar");
     };
     
+    const handlerSchedulesMonth = async(month: string) => {
+        try{
+            setLoad(true)
+            const resp = await getScheduleByMonthAndUserId(month, user?.[0].id as number, token as string)
+
+            if (!resp.data || resp.data.length === 0) return;
+
+            let info: { [key: string]: any } = {};
+            resp.data.forEach((item: ISchedules) => {
+                const dateKey = item.date.split("T")[0];
+                info[dateKey] = { selected: true, selectedColor: item.bgColor };
+
+            })
+            let today: { [key: string]: any } = {};
+            today[selectedDate] = { selected: true, selectedColor: '#df1b7d'}
+            setMarkedMonth({...today, ...info})
+        }catch(error){
+            console.log(error)
+        }finally{
+            setLoad(false)
+        }
+        
+    }
+
+    useEffect(()=>{
+        const monthC = monthConvert(Number(selectedDate.split("-")[1]))
+        handlerSchedulesMonth(monthC as string)
+    },[])
+
     return(
         <SafeAreaView className="flex-1 bg-white">
             <Calendars
                 setData={setSelectedDate}
+                handlerSchedulesMonth={handlerSchedulesMonth}
+                markedMonth={markedMonth}
             />
             <View className="p-4">
                 <View className="flex-row justify-between items-center">
@@ -99,6 +138,7 @@ export default function Calendar(){
                     }
                 />                
             </View>
+            <LoadingComponent />
             <StatusBar style="dark" backgroundColor="#009cd9" />
         </SafeAreaView>
     )

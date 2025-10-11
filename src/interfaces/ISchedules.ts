@@ -7,6 +7,7 @@ enum Status{
 
 export interface ISchedules{
     id: number,
+    month: string,
     date: string
     timeStart: string,
     timeEnd: string,

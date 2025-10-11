@@ -1,7 +1,11 @@
+import { getScheduleByMonthAndUserId } from "@/api/service/schedules.service";
 import { useDate } from "@/hooks/useDate";
 import { ICalendar } from "@/interfaces/ICalendar";
+import { ISchedules } from "@/interfaces/ISchedules";
 import { useDateStore } from "@/stores/DateStore";
+import { useLoading } from "@/stores/loading";
 import { LocalDate } from "@/utils/localDate";
+import { monthConvert } from "@/utils/monthConvert";
 import { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
 import { Calendar, LocaleConfig } from "react-native-calendars"
@@ -16,15 +20,13 @@ LocaleConfig.locales['pt-br'] = {
 LocaleConfig.defaultLocale = 'pt-br'
 
 type Props = {
-    setData: (date: string) => void
+    setData: (date: string) => void,
+    handlerSchedulesMonth: (date: string) => void,
+    markedMonth: Record<string, any>
 }
 
-export const Calendars = ({ setData }:Props) => {
-    const [selected, setSelected] = useState(LocalDate());
+export const Calendars = ({ setData, handlerSchedulesMonth, markedMonth }:Props) => {  
     const { setDate, setCorrectedDate } = useDateStore()
-    const vacation = {key: 'vacation', color: 'red', selectedDotColor: 'blue'};
-    const massage = {key: 'massage', color: 'blue', selectedDotColor: 'blue'};
-    const workout = {key: 'workout', color: 'green'};
 
     const handlerDate = (day: ICalendar) => {
         setData(day.dateString);
@@ -56,18 +58,13 @@ export const Calendars = ({ setData }:Props) => {
                 borderBottomWidth: 1,
                 borderColor: "#FFF"
             }}
-            markedDates={{
-                [selected]: {
-                    dots: [vacation, massage, workout],
-                    selected: true, 
-                    selectedColor: '#df1b7d'
-                },
-                '2025-10-16': {dots: [massage, workout], selected: true, selectedColor: '#7a9b44'},
-                '2025-10-19': {dots: [massage, workout], selected: true, selectedColor: '#7a9b44'},
-                '2025-10-28': {dots: [massage, workout], selected: true, selectedColor: '#7a9b44'}
-            }}
+            markedDates={markedMonth}
             onDayPress={day => {
                handlerDate(day)
+            }}
+            onMonthChange={(month) => {
+                const monthC = monthConvert(month.month)
+                handlerSchedulesMonth(monthC as string)
             }}
         />
     )
