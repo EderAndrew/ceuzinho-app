@@ -34,6 +34,7 @@ export interface ISchedules{
 
 export interface ISchedulesPaylod{
     date: string,
+    month: string,
     period: string,
     scheduleType: string,
     tema: string,

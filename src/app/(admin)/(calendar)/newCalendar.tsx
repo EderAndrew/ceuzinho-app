@@ -22,9 +22,9 @@ export default function NewCalendar() {
     const { date, correctedDate } = useDateStore()
     const [teachers, setTeachers] = useState<IUser[]>([])
     const [theme, setTheme] = useState("")
-    const [selectedRoomType, setSelectedRoomType] = useState("Maternal");
+    const [selectedRoomType, setSelectedRoomType] = useState("MATERNAL");
     const [selectedIds, setSelectedIds] = useState<number[]>([]);
-    const [selectedPeriodsType, setSelectedPeriodsType] = useState("Manhã")
+    const [selectedPeriodsType, setSelectedPeriodsType] = useState("MANHÃ")
     const {setLoad} = useLoading()
 
     const toggleCheckbox = (id: number) => {
@@ -68,6 +68,7 @@ export default function NewCalendar() {
         try{
              const payload = {
                 date: correctedDate,
+                month: date.split(" ")[2],
                 period: selectedPeriodsType,
                 tema: theme,
                 scheduleType: "CEUZINHO",
@@ -77,6 +78,7 @@ export default function NewCalendar() {
                 room: selectedRoomType
             } as ISchedulesPaylod
 
+            console.log(payload)
             await createSchedule(payload, token as string)
 
             router.back()

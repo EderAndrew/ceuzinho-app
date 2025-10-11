@@ -15,7 +15,7 @@ export const Room = [
 
 export const Periods = [
     {
-        value: "MANHA",
+        value: "MANHÃ",
         label: "Manhã"
     },
     {

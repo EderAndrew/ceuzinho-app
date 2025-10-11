@@ -120,12 +120,14 @@ export default function Calendar(){
             <View className="p-4">
                 <View className="flex-row justify-between items-center">
                     <Text className="text-xl">{date}</Text>
-                    <TouchableOpacity
-                        className={`${isFutureDate ? "bg-cgreen" : "bg-slate-400"} rounded-full p-1`}
-                        onPress={handleAddSchedule}
-                    >
-                        <MaterialIcons size={28} name={"add"} color={"#FFF"} />
-                    </TouchableOpacity>
+                    {user?.[0].role === "ADMIN" && (
+                        <TouchableOpacity
+                            className={`${isFutureDate ? "bg-cgreen" : "bg-slate-400"} rounded-full p-1`}
+                            onPress={handleAddSchedule}
+                        >
+                            <MaterialIcons size={28} name={"add"} color={"#FFF"} />
+                        </TouchableOpacity>
+                    )}
                 </View>
                 <FlatList 
                     data={schedules}

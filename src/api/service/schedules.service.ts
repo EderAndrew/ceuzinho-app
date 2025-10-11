@@ -1,9 +1,6 @@
 import { ISchedulesPaylod } from "@/interfaces/ISchedules"
 import { api } from "../connection"
 
-const url = process.env.EXPO_PUBLIC_URL
-
-
 export const getSchedulesByDate = async(date: string, token: string) => {
     try{
         const response = await api.get(`/schedules/schedules/${date}`,{
