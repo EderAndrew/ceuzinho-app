@@ -1,12 +1,24 @@
 import { View, Text, TouchableOpacity, Image } from "react-native"
 import MaterialIcons from "@expo/vector-icons/MaterialIcons"
 import { ISchedules } from "@/interfaces/ISchedules"
+import { useRouter } from "expo-router"
 
 type Props = {
     data: ISchedules
 }
 export const DateCard = ({data}: Props) => {
+    const router = useRouter()
     
+    const handlerEditSchedule = (id: number) => {
+        if(String(data.status) !== "AGUARDANDO") return
+        router.navigate(`/editCalendar/${id}`)
+    }
+
+    const handlerDeleteSchedule = (id: number) => {
+        if(String(data.status) !== "AGUARDANDO") return
+        console.log("DELETE CARD: ", id)
+    }
+
     return (
         <View className="w-full flex-row bg-[#E9E9E9] mt-4 border border-slate-400 rounded-lg">
             <View className={`p-2 rounded-tl-lg rounded-bl-lg justify-center items-center`}
@@ -34,11 +46,11 @@ export const DateCard = ({data}: Props) => {
                 <View className="flex-row justify-between items-center">
                     <Text>Periodo da {data.period.toLowerCase()}</Text>
                     <View className="flex-row justify-between items-center gap-2">
-                        <TouchableOpacity>
-                            <MaterialIcons size={24} name={"edit"} color={"#9F9D9E"} />
+                        <TouchableOpacity onPress={()=>handlerEditSchedule(data.id)}>
+                            <MaterialIcons size={24} name={"edit"} color={String(data.status) === "AGUARDANDO" ? "#043a68" : "#9F9D9E"} />
                         </TouchableOpacity>
-                        <TouchableOpacity>
-                            <MaterialIcons size={24} name={"delete"} color={"#9F9D9E"} />
+                        <TouchableOpacity onPress={()=>handlerDeleteSchedule(data.id)}>
+                            <MaterialIcons size={24} name={"delete"} color={String(data.status) === "AGUARDANDO" ? "#df1b7d" : "#9F9D9E"} />
                         </TouchableOpacity>
                     </View>
                 </View>

@@ -5,6 +5,7 @@ export default function CalendarLayout() {
         <Stack screenOptions={{ headerShown: false}}>
             <Stack.Screen name="calendar"/>
             <Stack.Screen name="newCalendar"/>
+            <Stack.Screen name="editCalendar/[id]" />
         </Stack>
     )
 }

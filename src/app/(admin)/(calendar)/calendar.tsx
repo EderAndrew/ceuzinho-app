@@ -26,7 +26,7 @@ import { LocalDate } from "@/utils/localDate";
 import { LoadingComponent } from "@/components/LoadingComponent";
 import { useLoading } from "@/stores/loading";
 import { monthConvert } from "@/utils/monthConvert";
-
+import { SystemBars } from "react-native-edge-to-edge";
 
 export default function Calendar(){
     const [schedules, setSchedules] = useState<ISchedules[]>([]);
@@ -111,13 +111,20 @@ export default function Calendar(){
     },[])
 
     return(
-        <SafeAreaView className="flex-1 bg-white">
+        <SafeAreaView className="flex-1 bg-acquaBlue">
+            <SystemBars style="dark" hidden={true} />
+            <View className="flex px-4 flex-row justify-between">
+                <Text className="text-3xl font-semibold text-white">Calendário</Text>
+                <TouchableOpacity>
+                    <MaterialIcons size={24} name={"book"} color={"#df1b7d"} />
+                </TouchableOpacity>
+            </View>            
             <Calendars
                 setData={setSelectedDate}
                 handlerSchedulesMonth={handlerSchedulesMonth}
                 markedMonth={markedMonth}
             />
-            <View className="p-4">
+            <View className="p-4 bg-white flex-1">
                 <View className="flex-row justify-between items-center">
                     <Text className="text-xl">{date}</Text>
                     {user?.[0].role === "ADMIN" && (
@@ -141,7 +148,6 @@ export default function Calendar(){
                 />                
             </View>
             <LoadingComponent />
-            <StatusBar style="dark" backgroundColor="#009cd9" />
         </SafeAreaView>
     )
 }

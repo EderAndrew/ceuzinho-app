@@ -11,6 +11,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { LoadingComponent } from "@/components/LoadingComponent";
 import { useLoading } from "@/stores/loading";
 import { StatusBar } from 'expo-status-bar';
+import { SystemBars } from "react-native-edge-to-edge";
 
 export default function Login(){
     const router = useRouter()
@@ -52,7 +53,8 @@ export default function Login(){
     }
     const ErrorMessage = message.length > 0 ? <Text className="font-RobotoSemibold text-xl text-red-700 text-center mt-5">{message}</Text> : ""
     return(
-        <SafeAreaView className="flex-1 justify-center">
+        <SafeAreaView className="flex-1 justify-center bg-white">
+            <SystemBars style="dark" hidden={true} />
             <View className="h-[27rem] bg-white justify-center items-center">
                 <Image 
                     source={logoImage}
