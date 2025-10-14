@@ -45,3 +45,18 @@ export const getScheduleByMonthAndUserId = async(month: string, userId: number, 
         throw error; // ou retorne { success: false, error }
     }
 }
+
+export const getScheduleById = async(id: number, token: string) => {
+    try{
+        const response = await api.get(`/schedules/schedule/${id}`,{
+            headers:{
+                Authorization: `Bearer ${token}`
+            }
+        })
+
+        return response.data
+    }catch(error){
+        console.error("Erro ao buscar o mês:", error);
+        throw error; // ou retorne { success: false, error }
+    }
+}

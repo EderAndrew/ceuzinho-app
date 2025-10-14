@@ -15,6 +15,7 @@ import { createSchedule } from "@/api/service/schedules.service";
 import { LoadingComponent } from "@/components/LoadingComponent";
 import { useLoading } from "@/stores/loading";
 import { ISchedulesPaylod } from "@/interfaces/ISchedules";
+import { HeaderComponent } from "@/components/HeaderComponent";
 
 export default function NewCalendar() {
     const router = useRouter();
@@ -91,12 +92,9 @@ export default function NewCalendar() {
 
     return (
         <SafeAreaView className="flex-1 bg-white px-4">
-            <View className="flex flex-row gap-4">
-                <TouchableOpacity onPress={()=>router.back()}>
-                    <MaterialIcons size={32} name={"arrow-back"} color={"#334155"} />
-                </TouchableOpacity>
-                <Text className="w- text-3xl font-RobotoBold text-slate-700">{date}</Text>
-            </View>
+            <HeaderComponent 
+                title={date}
+            />
             <View className="flex h-full mt-10 gap-4">
                 <View className="gap-4">
                     <View>

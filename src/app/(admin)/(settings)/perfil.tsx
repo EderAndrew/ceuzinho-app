@@ -18,12 +18,12 @@ export default function Perfil(){
     const route = useRouter()
 
     return(
-        <SafeAreaView className="flex-1 bg-white px-4">
+        <SafeAreaView className="flex-1 bg-white p-4">
             <View className="flex-1 justify-between">
                 <View>
                     <View className="flex flex-row w-full justify-between items-center">
-                        <Text className="text-4xl font-RobotoBold mt-8 ml-4 text-slate-800">Meu Perfil</Text>
-                        <TouchableOpacity className="mt-8 mr-4" onPress={()=>route.push("/changePassword")}>
+                        <Text className="text-3xl font-RobotoBold text-slate-800">Meu Perfil</Text>
+                        <TouchableOpacity onPress={()=>route.push("/changePassword")}>
                             <MaterialIcons size={30} name='settings' color={"#1e293b"} />
                         </TouchableOpacity>
                     </View>

@@ -11,6 +11,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LoadingComponent } from "@/components/LoadingComponent";
 import { useLoading } from "@/stores/loading";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { HeaderComponent } from "@/components/HeaderComponent";
 
 export default function ChangePassword(){
     const route = useRouter()
@@ -62,14 +63,11 @@ export default function ChangePassword(){
 
     return(
         <SafeAreaView className="flex-1 bg-white">
-            <View className="flex-1 p-4 mt-8 justify-between items-center">
+            <View className="flex-1 p-4 justify-between items-center">
                 <View>
-                    <View className="flex flex-row items-center gap-2">
-                        <TouchableOpacity onPress={()=> route.back()}>
-                            <MaterialIcons size={38} name='arrow-back' color={"#1e293b"} />
-                        </TouchableOpacity>
-                        <Text className="text-4xl font-RobotoBold text-slate-800">Mudar a Senha</Text>
-                    </View>
+                    <HeaderComponent
+                        title="Mudar a Senha"
+                    />
                     <View className="mt-6 gap-2">
                         <Text className="font-Roboto text-xl">Digite a sua senha</Text>
                         <InputComponent
