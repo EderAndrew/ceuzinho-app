@@ -20,7 +20,7 @@ export default function EditCalendar() {
             setLoad(true)
             try{
                 const data = await getScheduleById(Number(id), token as string)
-                if(!data.setData) return
+                if(!data.data) return
                 setSchedule(data.data)
             }catch(error){
                 console.error(error)
