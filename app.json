@@ -15,7 +15,8 @@
     },
     "ios": {
       "supportsTablet": true,
-      "requireFullScreen": true
+      "requireFullScreen": true,
+      "bundleIdentifier": "com.drew-ed043.ceuzinhoapp"
     },
     "android": {
       "softwareKeyboardLayoutMode": "pan",
@@ -25,7 +26,11 @@
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.drew_ed043.ceuzinhoapp"
+      "package": "com.drew_ed043.ceuzinhoapp",
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "favicon": "./src/assets/icons/favicon.png",
