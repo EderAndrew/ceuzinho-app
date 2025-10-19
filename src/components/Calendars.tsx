@@ -1,12 +1,7 @@
-import { getScheduleByMonthAndUserId } from "@/api/service/schedules.service";
 import { useDate } from "@/hooks/useDate";
 import { ICalendar } from "@/interfaces/ICalendar";
-import { ISchedules } from "@/interfaces/ISchedules";
 import { useDateStore } from "@/stores/DateStore";
-import { useLoading } from "@/stores/loading";
-import { LocalDate } from "@/utils/localDate";
 import { monthConvert } from "@/utils/monthConvert";
-import { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
 import { Calendar, LocaleConfig } from "react-native-calendars"
 
@@ -72,7 +67,7 @@ export const Calendars = ({ setData, handlerSchedulesMonth, markedMonth }:Props)
 
 const styles = StyleSheet.create({
     container: {
-        height: 368,
+        height: 340,
         borderBottomLeftRadius: 20,
         borderBottomRightRadius: 20,
     },

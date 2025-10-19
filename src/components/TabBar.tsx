@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
 export function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
-  const [dimensions, setDimensions] = useState({height: 20, width: 100})
+  const [dimensions, setDimensions] = useState({height: 30, width: 100})
 
   const buttonWidth = dimensions.width / state.routes.length
 
@@ -36,9 +36,9 @@ export function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
         borderRadius: 50,
         borderWidth: 2,
         borderColor: '#fff',
-        marginHorizontal: 16,
+        marginHorizontal: 22,
         height: dimensions.height - -10,
-        width: buttonWidth - 35
+        width: buttonWidth - 45
       }]}/>
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];

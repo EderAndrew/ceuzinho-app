@@ -113,20 +113,22 @@ export default function Calendar(){
     },[])
 
     return(
-        <SafeAreaView edges={['bottom']} className="flex-1 bg-white">
+        <View className="flex-1 bg-white">
             {isIOS ? null:<SystemBars style="dark" hidden={true} />}
-            <View className="flex px-4 mt-16 flex-row justify-between">
-                <Text className="text-3xl font-semibold text-white">Calendário</Text>
-                <TouchableOpacity>
-                    <MaterialIcons size={24} name={"book"} color={"#df1b7d"} />
-                </TouchableOpacity>
-            </View>            
-            <Calendars
-                setData={setSelectedDate}
-                handlerSchedulesMonth={handlerSchedulesMonth}
-                markedMonth={markedMonth}
-            />
-            <View className="p-4 bg-white flex-1">
+            <SafeAreaView className="bg-acquaBlue rounded-s-2xl rounded-e-2xl">
+                <View className="flex px-4 flex-row justify-between">
+                    <Text className="text-3xl font-semibold text-white">Calendário</Text>
+                    <TouchableOpacity>
+                        <MaterialIcons size={24} name={"book"} color={"#df1b7d"} />
+                    </TouchableOpacity>
+                </View>            
+                <Calendars
+                    setData={setSelectedDate}
+                    handlerSchedulesMonth={handlerSchedulesMonth}
+                    markedMonth={markedMonth}
+                />
+            </SafeAreaView>
+            <View className="px-4 mt-4 bg-white">
                 <View className="flex-row justify-between items-center">
                     <Text className="text-xl">{date}</Text>
                     {user?.[0].role === "ADMIN" && (
@@ -150,6 +152,6 @@ export default function Calendar(){
                 />                
             </View>
             <LoadingComponent />
-        </SafeAreaView>
+        </View>
     )
 }
