@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { View, Text, Image, TouchableOpacity } from "react-native";
+import { View, Text, Image, TouchableOpacity, Platform } from "react-native";
 import { InputComponent } from "@/components/InputComponent";
 import { LoginSchema } from "@/schemas/login.schema";
 import { signIn, userSession } from "@/api/service/auth.service";
@@ -53,16 +53,16 @@ export default function Login(){
     }
     const ErrorMessage = message.length > 0 ? <Text className="font-RobotoSemibold text-xl text-red-700 text-center mt-5">{message}</Text> : ""
     return(
-        <SafeAreaView className="flex-1 justify-center bg-white">
+        <View className="flex-1 justify-center bg-white">
             <SystemBars style="dark" hidden={true} />
-            <View className="h-[27rem] bg-white justify-center items-center">
+            <SafeAreaView className="h-[27rem] bg-white justify-center items-center">
                 <Image 
                     source={logoImage}
-                    className="w-full h-28"
+                    className='w-full h-28'
                     resizeMode="contain"
                 />  
-            </View>
-            <View className="flex-1 justify-between bg-acquaBlue items-center rounded-t-2xl">
+            </SafeAreaView>
+            <SafeAreaView className="flex-1 justify-between bg-acquaBlue items-center rounded-t-2xl">
                 <View className="px-10 gap-4">
                     <View className="w-[100%] mt-8">
                         <Text className="font-RobotoBold font-semibold text-3xl text-white">Login</Text>
@@ -95,9 +95,8 @@ export default function Login(){
                     handleLogin={handleLogin}
                 />
                 <Text className="text-white text-sm mb-5">V1.0 Calendar</Text>
-            </View>
+            </SafeAreaView>
             <LoadingComponent />
-            <StatusBar style="inverted" backgroundColor="#ffffff" />
-        </SafeAreaView>
+        </View>
     )
 }

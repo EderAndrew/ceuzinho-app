@@ -4,9 +4,9 @@ import {
   Text,
   TouchableOpacity,
   FlatList,
-  Alert
+  Alert,
+  Platform
 } from "react-native";
-import { StatusBar } from 'expo-status-bar';
 
 import { SafeAreaView } from "react-native-safe-area-context";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
@@ -39,6 +39,8 @@ export default function Calendar(){
     const { date, setDate } = useDateStore();
     const {setLoad} = useLoading()
     const router = useRouter();
+
+    const isIOS = Platform.OS === 'ios'
 
         
     // Atualiza data formatada no store
@@ -111,9 +113,9 @@ export default function Calendar(){
     },[])
 
     return(
-        <SafeAreaView className="flex-1 bg-acquaBlue">
-            <SystemBars style="dark" hidden={true} />
-            <View className="flex px-4 flex-row justify-between">
+        <SafeAreaView edges={['bottom']} className="flex-1 bg-white">
+            {isIOS ? null:<SystemBars style="dark" hidden={true} />}
+            <View className="flex px-4 mt-16 flex-row justify-between">
                 <Text className="text-3xl font-semibold text-white">Calendário</Text>
                 <TouchableOpacity>
                     <MaterialIcons size={24} name={"book"} color={"#df1b7d"} />
