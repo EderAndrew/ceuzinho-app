@@ -18,8 +18,8 @@ export default function Perfil(){
     const route = useRouter()
 
     return(
-        <SafeAreaView className="flex-1 bg-white p-4">
-            <View className="flex-1 justify-between">
+        <View className="flex-1 bg-white p-4">
+            <SafeAreaView className="flex-1 justify-between">
                 <View>
                     <View className="flex flex-row w-full justify-between items-center">
                         <Text className="text-3xl font-RobotoBold text-slate-800">Meu Perfil</Text>
@@ -29,7 +29,7 @@ export default function Perfil(){
                     </View>
                     
                     <View className="w-full flex justify-center items-center mt-10">
-                        <View className="w-40 h-40 bg-slate-400 rounded-full border">
+                        <View className="w-36 h-36 bg-slate-400 rounded-full border">
                             {session!.photo && (
                                 <Image 
                                     source={{ uri: session?.photo }}
@@ -43,7 +43,7 @@ export default function Perfil(){
                             className={`p-2 rounded-full absolute ml-24 mt-32`}
                             onPress={()=>setOpenModal(true)}
                         >
-                            <MaterialIcons size={30} name='camera-alt' color={"#FFF"} />
+                            <MaterialIcons size={28} name='camera-alt' color={"#FFF"} />
                         </TouchableOpacity>
                         
                     </View>
@@ -67,7 +67,7 @@ export default function Perfil(){
                 >
                     <Text className="text-darkPink font-RobotoSemibold text-xl">Sair</Text>
                 </TouchableOpacity>
-            </View>
+            </SafeAreaView>
             <PhotoModal
                 userId={user?.[0]?.id.toString() as string}
                 visible={openModal}
@@ -79,6 +79,6 @@ export default function Perfil(){
                 setVisible={setOpenCamera}
             />
             <LoadingComponent />
-        </SafeAreaView>
+        </View>
     )
 }

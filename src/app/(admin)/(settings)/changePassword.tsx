@@ -62,13 +62,13 @@ export default function ChangePassword(){
     }
 
     return(
-        <SafeAreaView className="flex-1 bg-white">
-            <View className="flex-1 p-4 justify-between items-center">
+        <View className="flex-1 bg-white">
+            <HeaderComponent
+                title="Mudar a Senha"
+            />
+            <SafeAreaView className="flex-1 px-4 justify-between items-center">
                 <View>
-                    <HeaderComponent
-                        title="Mudar a Senha"
-                    />
-                    <View className="mt-6 gap-2">
+                    <View className="gap-2">
                         <Text className="font-Roboto text-xl">Digite a sua senha</Text>
                         <InputComponent
                             hasIcon={false}
@@ -103,12 +103,12 @@ export default function ChangePassword(){
                 <TouchableOpacity onPress={handleChangePassword} className="m-auto">
                     <Text className="bg-bcgreen text-xl font-RobotoSemibold">Trocar</Text>
                 </TouchableOpacity>                
-            </View>
+            </SafeAreaView>
             <ModalResetPassword
                 visible={visibleReset}
                 handleLogout={handleLogout}
             />
             <LoadingComponent />
-        </SafeAreaView>
+        </View>
     )
 }

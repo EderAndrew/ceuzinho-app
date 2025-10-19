@@ -91,11 +91,11 @@ export default function NewCalendar() {
     }
 
     return (
-        <SafeAreaView className="flex-1 bg-white px-4">
+        <View className="flex-1 bg-white px-4">
             <HeaderComponent 
                 title={date}
             />
-            <View className="flex h-full mt-10 gap-4">
+            <SafeAreaView className="flex h-full gap-4">
                 <View className="gap-4">
                     <View>
                         <Text className="text-xl">Sala</Text>
@@ -161,8 +161,8 @@ export default function NewCalendar() {
                 >
                     <Text className="text-darkPink font-RobotoSemibold text-xl">Salvar</Text>
                 </TouchableOpacity>
-            </View>
+            </SafeAreaView>
             <LoadingComponent />
-        </SafeAreaView>
+        </View>
     )
 }

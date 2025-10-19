@@ -13,7 +13,7 @@ export const LoadingComponent = () => {
         >
             <View className="flex-1 items-center justify-center bg-black/30">
                 <ActivityIndicator size="large" color="#018bba" />
-                <Text className="mt-2 text-xl font-RobotoRegular">Carregando...</Text>
+                <Text className="mt-2 text-xl font-RobotoRegular text-white">Carregando...</Text>
             </View>
         </Modal>
     )
