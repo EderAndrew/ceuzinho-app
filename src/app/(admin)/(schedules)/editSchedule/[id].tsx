@@ -9,7 +9,7 @@ import { LoadingComponent } from "@/components/LoadingComponent";
 import { useLoading } from "@/stores/loading";
 import { ISchedules } from "@/interfaces/ISchedules";
 
-export default function EditCalendar() {
+export default function EditSchedule() {
     const [schedule, setSchedule] = useState<ISchedules>()
     const { id } = useLocalSearchParams<{ id: string }>()
     const {setLoad} = useLoading()

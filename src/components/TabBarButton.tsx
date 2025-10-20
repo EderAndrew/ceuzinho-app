@@ -1,6 +1,6 @@
 import { icon } from "@/constants/icons"
 import { useEffect } from "react"
-import { Text, Pressable } from "react-native"
+import { Pressable } from "react-native"
 import Animated, { interpolate, useAnimatedStyle, useSharedValue, withSpring } from "react-native-reanimated"
 
 type Props = {
@@ -40,12 +40,12 @@ export const TabBarButton = ({onPress, onLongPress, isFocused, routeName, color,
     })
     return (
             <Pressable
-            onPress={onPress}
-            onLongPress={onLongPress}
-            className="flex-1 flex justify-center items-center p-2"
-        >   
+                onPress={onPress}
+                onLongPress={onLongPress}
+                className="flex-1 flex justify-center items-center p-2"
+            >   
             <Animated.View style={animatedIconStyle}>
-                {icon[routeName as keyof typeof icon]({
+                {icon[routeName as keyof typeof icon]?.({
                     color: isFocused ? "#fff" : "#fff"
                 })}
             </Animated.View>

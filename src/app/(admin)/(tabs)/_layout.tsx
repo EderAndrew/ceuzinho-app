@@ -3,15 +3,15 @@ import { TabBar } from "@/components/TabBar";
 
 export default function AdmintLayout() {    
     return (
-        <Tabs initialRouteName="(calendar)"
+        <Tabs initialRouteName="calendar"
             screenOptions={{
                 headerShown: false
             }}
             tabBar={props => <TabBar {...props}/>}
         >
             <Tabs.Screen name="newRoom" options={{ title: "Sala" }}/>
-            <Tabs.Screen name="(calendar)" options={{ title: "Agenda" }}/>
-            <Tabs.Screen name="(settings)" options={{ title: "Perfil" }}/>
+            <Tabs.Screen name="calendar" options={{ title: "Agenda" }}/>
+            <Tabs.Screen name="perfil" options={{ title: "Perfil" }}/>
         </Tabs>
     )
 }

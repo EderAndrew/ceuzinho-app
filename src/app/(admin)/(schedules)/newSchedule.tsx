@@ -1,6 +1,5 @@
 import { SafeAreaView } from "react-native-safe-area-context";
-import { FlatList, Text, TouchableOpacity, View, Image, Alert } from "react-native";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons"
+import { FlatList, Text, TouchableOpacity, View, Image, Alert, Platform, ScrollView } from "react-native";
 import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { InputComponent } from "@/components/InputComponent";
@@ -95,19 +94,10 @@ export default function NewCalendar() {
             <HeaderComponent 
                 title={date}
             />
-            <SafeAreaView className="flex h-full gap-4">
-                <View className="gap-4">
-                    <View>
-                        <Text className="text-xl">Sala</Text>
-                        <PickerInput
-                            selectInfoType={selectedRoomType}
-                            setSelectInfoType={setSelectedRoomType}
-                            infoObject={Room}
-                            labelKey="label"
-                            valueKey="value"
-                        />
-                    </View>
-                    <View>
+            <SafeAreaView className="flex-1 justify-between">
+            <ScrollView showsVerticalScrollIndicator={false}>
+                <View className="flex-1">
+                    <View className="mb-4">
                         <Text className="text-xl">Tema</Text>
                         <InputComponent
                             placeholder="Titulo da matéria"
@@ -118,7 +108,17 @@ export default function NewCalendar() {
                         />
                     </View>
                     <View>
-                        <Text className="text-xl">Periodo</Text>
+                        <Text className="text-xl">Turma</Text>
+                        <PickerInput
+                            selectInfoType={selectedRoomType}
+                            setSelectInfoType={setSelectedRoomType}
+                            infoObject={Room}
+                            labelKey="label"
+                            valueKey="value"
+                        />
+                    </View>
+                    <View className="mt-4">
+                        <Text className="text-xl">Período</Text>
                         <PickerInput
                             selectInfoType={selectedPeriodsType}
                             setSelectInfoType={setSelectedPeriodsType}
@@ -127,7 +127,10 @@ export default function NewCalendar() {
                             valueKey="value"
                         />
                     </View>
-                    <View className="gap-3">
+                    <View className={Platform.select({
+                        ios: "flex-1 gap-3 mt-4",
+                        android: "flex-1 gap-3 mt-4 h-96"
+                    })}>
                         <Text className="text-xl">Professores</Text>
                         <FlatList
                             data = {teachers}
@@ -156,11 +159,12 @@ export default function NewCalendar() {
                     </View>
                 </View>
                 <TouchableOpacity
-                    className="flex m-auto"
+                    className="flex m-auto mb-6"
                     onPress={handlerCalendar}
                 >
                     <Text className="text-darkPink font-RobotoSemibold text-xl">Salvar</Text>
                 </TouchableOpacity>
+            </ScrollView>
             </SafeAreaView>
             <LoadingComponent />
         </View>

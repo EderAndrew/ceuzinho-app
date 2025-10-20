@@ -80,7 +80,7 @@ export default function Calendar(){
 
     const handleAddSchedule = () => {
         if (!isFutureDate) return;
-        router.navigate("newCalendar");
+        router.navigate("(schedules)/newSchedule");
     };
     
     const handlerSchedulesMonth = async(month: string) => {
@@ -115,7 +115,10 @@ export default function Calendar(){
     return(
         <View className="flex-1 bg-white">
             {isIOS ? null:<SystemBars style="dark" hidden={true} />}
-            <SafeAreaView className="bg-acquaBlue rounded-s-2xl rounded-e-2xl">
+            <SafeAreaView className={Platform.select({
+                ios:"bg-acquaBlue rounded-s-2xl rounded-e-2xl",
+                android:"bg-acquaBlue rounded-s-2xl rounded-e-2xl h-[30rem]"
+            })}>
                 <View className="flex px-4 flex-row justify-between">
                     <Text className="text-3xl font-semibold text-white">Calendário</Text>
                     <TouchableOpacity>

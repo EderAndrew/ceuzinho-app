@@ -1,5 +1,5 @@
 import { Picker } from "@react-native-picker/picker"
-import { View } from "react-native"
+import { Platform, View, Text } from "react-native"
 
 type Props<T> = {
     selectInfoType: string | null,
@@ -17,8 +17,14 @@ export const PickerInput = <T extends Record<string, any>>({
     valueKey = 'name'
 }: Props<T>) => {
     return (
-        <View className="w-full border-slate-400 border rounded-md">
-            <View className="rounded-md">
+        <View className={Platform.select({
+            ios: "",
+            android: "w-full border-slate-400 border rounded-md"
+        })}>
+            <View className={Platform.select({
+                ios: "",
+                android: "rounded-md"
+            })}>
                 <Picker
                     dropdownIconColor="#1e293b"
                     selectedValue={selectInfoType}
