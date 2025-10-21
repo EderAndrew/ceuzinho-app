@@ -7,9 +7,10 @@ import { useDateStore } from "@/stores/DateStore";
 import { Periods, Room } from "@/utils/room";
 import { PickerInput } from "@/components/PickerInput";
 import { Checkbox } from 'expo-checkbox';
-import { useServices } from "@/hooks/useServices";
+import { allTeachers } from "@/api/service/user.service";
 import { useUser } from "@/stores/session";
 import { IUser } from "@/interfaces/IUser";
+import { createSchedule } from "@/api/service/schedules.service";
 import { LoadingComponent } from "@/components/LoadingComponent";
 import { useLoading } from "@/stores/loading";
 import { ISchedulesPaylod } from "@/interfaces/ISchedules";
@@ -19,7 +20,6 @@ export default function NewCalendar() {
     const router = useRouter();
     const { user, token } = useUser()
     const { date, correctedDate } = useDateStore()
-    const { user: userService, schedule } = useServices()
     const [teachers, setTeachers] = useState<IUser[]>([])
     const [theme, setTheme] = useState("")
     const [selectedRoomType, setSelectedRoomType] = useState("MATERNAL");
@@ -36,10 +36,8 @@ export default function NewCalendar() {
     useEffect(()=>{
         (async()=>{
             try{
-                const result = await userService.getUsersByRole("TEACHER", token as string)
-                if (result.success) {
-                    setTeachers(result.data)
-                }
+                const data = await allTeachers(token as string)
+                setTeachers(data.users)
             }catch(error){
                 Alert.alert("Erro ao carregar os professores.")
             }
@@ -81,13 +79,9 @@ export default function NewCalendar() {
             } as ISchedulesPaylod
 
             console.log(payload)
-            const result = await schedule.createSchedule(payload, token as string)
-            
-            if (result.success) {
-                router.back()
-            } else {
-                Alert.alert("Erro", result.error || "Não foi possível salvar o agendamento.");
-            }
+            await createSchedule(payload, token as string)
+
+            router.back()
         }catch(error){
            Alert.alert("Erro", "Não foi possível salvar o agendamento.");
         }finally{

@@ -19,7 +19,7 @@ import { useUser } from "@/stores/session";
 import { useDateStore } from "@/stores/DateStore";
 import { useFocusEffect, useRouter } from "expo-router";
 
-import { useServices } from "@/hooks/useServices";
+import { getScheduleByMonthAndUserId, getSchedulesByDate } from "@/api/service/schedules.service";
 import { useDate } from "@/hooks/useDate";
 import { CompareDate } from "@/hooks/compareDate";
 import { LocalDate } from "@/utils/localDate";
@@ -39,7 +39,6 @@ export default function Calendar(){
     const { date, setDate } = useDateStore();
     const {setLoad} = useLoading()
     const router = useRouter();
-    const { schedule } = useServices();
 
     const isIOS = Platform.OS === 'ios'
 
@@ -62,10 +61,10 @@ export default function Calendar(){
             
             const fetchSchedules = async () => {
                 try {
-                    const response = await schedule.getSchedulesByDate(selectedDate, token as string);
-                    if (!response.success || !response.data) {
-                        setSchedules([]);
-                        return;
+                    const response = await getSchedulesByDate(selectedDate, token as string);
+                    if (!response?.data) {
+                    setSchedules([]);
+                    return;
                     }
 
                     setSchedules(response.data);
@@ -87,9 +86,9 @@ export default function Calendar(){
     const handlerSchedulesMonth = async(month: string) => {
         try{
             setLoad(true)
-            const resp = await schedule.getSchedulesByMonth(month, user?.[0].id as number, token as string)
+            const resp = await getScheduleByMonthAndUserId(month, user?.[0].id as number, token as string)
 
-            if (!resp.success || !resp.data || resp.data.length === 0) return;
+            if (!resp.data || resp.data.length === 0) return;
 
             let info: { [key: string]: any } = {};
             resp.data.forEach((item: ISchedules) => {

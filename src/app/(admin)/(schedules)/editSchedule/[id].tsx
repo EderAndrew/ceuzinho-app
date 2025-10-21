@@ -4,7 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { HeaderComponent } from "@/components/HeaderComponent";
 import { useEffect, useState } from "react";
 import { useUser } from "@/stores/session";
-import { useServices } from "@/hooks/useServices";
+import { getScheduleById } from "@/api/service/schedules.service";
 import { LoadingComponent } from "@/components/LoadingComponent";
 import { useLoading } from "@/stores/loading";
 import { ISchedules } from "@/interfaces/ISchedules";
@@ -14,14 +14,13 @@ export default function EditSchedule() {
     const { id } = useLocalSearchParams<{ id: string }>()
     const {setLoad} = useLoading()
     const { token } = useUser();
-    const { schedule: scheduleService } = useServices();
     
     useEffect(()=>{
         (async()=>{
             setLoad(true)
             try{
-                const data = await scheduleService.getById(Number(id))
-                if(!data.success || !data.data) return
+                const data = await getScheduleById(Number(id), token as string)
+                if(!data.data) return
                 setSchedule(data.data)
             }catch(error){
                 console.error(error)
