@@ -4,3 +4,6 @@ export const FormatDate = (date: string) => {
         month: '2-digit',
         year: 'numeric'
     });
+    
+    return newDate
+}
