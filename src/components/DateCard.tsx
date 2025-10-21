@@ -11,7 +11,7 @@ export const DateCard = ({data}: Props) => {
     
     const handlerEditSchedule = (id: number) => {
         if(String(data.status) !== "AGUARDANDO") return
-        router.navigate(`/editCalendar/${id}`)
+        router.navigate(`/editSchedule/${id}`)
     }
 
     const handlerDeleteSchedule = (id: number) => {

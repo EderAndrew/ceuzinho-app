@@ -32,7 +32,7 @@ export default function EditSchedule() {
     },[])
     
     return(
-        <SafeAreaView className="flex-1 p-4">
+        <View className="flex-1 p-4">
             <HeaderComponent
                 title="Editar Calendário"
             />
@@ -63,6 +63,6 @@ export default function EditSchedule() {
                 </View>
             </View>
             <LoadingComponent />
-        </SafeAreaView>
+        </View>
     )
 }

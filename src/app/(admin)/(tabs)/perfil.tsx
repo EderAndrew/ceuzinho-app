@@ -9,13 +9,23 @@ import { LoadingComponent } from "@/components/LoadingComponent";
 import { useRouter } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { CameraModal } from "@/components/CameraModal";
+import { useLoading } from "@/stores/loading";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Perfil(){
     const { user } = useUser()
     const { session } = useSession(user?.[0] as IUser)
     const [openModal, setOpenModal] = useState(false)
     const [openCamera, setOpenCamera] = useState(false)
+    const { setLoad } = useLoading()
     const route = useRouter()
+
+    const handleLogout = async() => {
+        setLoad(true)
+        await AsyncStorage.removeItem("user")
+        route.replace("/(auth)/login")
+        setLoad(false)
+    }
 
     return(
         <View className="flex-1 bg-white p-4">
@@ -64,6 +74,7 @@ export default function Perfil(){
                 </View>            
                 <TouchableOpacity
                     className="flex m-auto"
+                    onPress={handleLogout}
                 >
                     <Text className="text-darkPink font-RobotoSemibold text-xl">Sair</Text>
                 </TouchableOpacity>
