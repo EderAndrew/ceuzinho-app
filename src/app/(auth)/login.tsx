@@ -2,7 +2,7 @@ import { useState } from "react";
 import { View, Text, Image, TouchableOpacity, Platform } from "react-native";
 import { InputComponent } from "@/components/InputComponent";
 import { LoginSchema } from "@/schemas/login.schema";
-import { signIn, userSession } from "@/api/service/auth.service";
+import { useServices } from "@/hooks/useServices";
 import { ILogin } from "@/interfaces/ILogin"
 import { useRouter } from "expo-router";
 import { useUser } from "@/stores/session";
@@ -10,13 +10,13 @@ import { ButtonComponent } from "@/components/ButtonComponent";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { LoadingComponent } from "@/components/LoadingComponent";
 import { useLoading } from "@/stores/loading";
-import { StatusBar } from 'expo-status-bar';
 import { SystemBars } from "react-native-edge-to-edge";
 
 export default function Login(){
     const router = useRouter()
     const { setUser, setToken } = useUser()
     const {setLoad} = useLoading()
+    const { auth } = useServices()
     
     const [message, setMessage] = useState("")
     const [form, setForm] = useState<LoginSchema>({
@@ -29,27 +29,25 @@ export default function Login(){
     const handleLogin = async() => {
         setLoad(true)
         setMessage("")
-        const data: ILogin = await signIn(form)
-
-        if(data.error){
-            setLoad(false)
-            setMessage(data.message)
-            return
-        }
-
-        const resp = await userSession(data.token!)
-
-        if(!resp){
-            setLoad(false)
-            return setMessage("Erro inesperado.")
-        }
         
-        setToken(data.token as string)
-        setUser([resp.user])
+        try {
+            const result = await auth.login(form)
 
-        router.replace('/(admin)/calendar')
-        setLoad(false)
+            if(!result.success){
+                setLoad(false)
+                setMessage(result.error || "Erro no login")
+                return
+            }
 
+            setToken(result.data!.token)
+            setUser([result.data!.user])
+
+            router.replace('/(admin)/calendar')
+        } catch (error) {
+            setMessage("Erro inesperado.")
+        } finally {
+            setLoad(false)
+        }
     }
     const ErrorMessage = message.length > 0 ? <Text className="font-RobotoSemibold text-xl text-red-700 text-center mt-5">{message}</Text> : ""
     return(

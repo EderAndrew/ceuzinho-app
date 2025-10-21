@@ -2,10 +2,9 @@ import { Image, Modal, Text, TouchableOpacity, View } from "react-native"
 import MaterialIcons from "@expo/vector-icons/MaterialIcons"
 import * as ImagePicker from 'expo-image-picker';
 import { useState } from "react"
-import { uploadImage } from "@/api/service/user.service";
+import { useServices } from "@/hooks/useServices";
 import { useUser } from "@/stores/session";
 import { useLoading } from "@/stores/loading";
-import { userSession } from "@/api/service/auth.service";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useCameraPermissions } from "expo-image-picker";
 import { usePhoto } from "@/stores/photo";
@@ -24,6 +23,7 @@ export const PhotoModal = ({ userId, visible, setVisible, openCamera }:Props) =>
     const { token, setUser } = useUser()
     const { setLoad } = useLoading()
     const { image, setImage, upPhoto, setUpPhoto } = usePhoto()
+    const { auth } = useServices()
   
     
     const pickImage = async () => {
@@ -54,18 +54,18 @@ export const PhotoModal = ({ userId, visible, setVisible, openCamera }:Props) =>
             type: upPhoto.mimeType
         };
         console.log(file)
-        const response = await uploadImage(userId, file, token!);
+        const response = await auth.uploadPhoto(upPhoto.uri, token!);
 
-        if(!response){
+        if(!response.success){
             setLoad(false)
-            setErrorMessage("Erro ao enviar imagem.")
+            setErrorMessage(response.error || "Erro ao enviar imagem.")
             return 
         }
 
-        const resp = await userSession(token!)
-        if (resp?.user) {
+        const resp = await auth.getCurrentUser(token!)
+        if (resp.success && resp.data) {
             await AsyncStorage.removeItem("user")
-            setUser([resp.user])
+            setUser([resp.data])
         }
         closeModal()
         setLoad(false)

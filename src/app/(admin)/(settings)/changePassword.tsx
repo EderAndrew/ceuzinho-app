@@ -5,7 +5,7 @@ import { InputComponent } from "@/components/InputComponent";
 import React, { useState } from "react";
 import { IPassword } from "@/interfaces/IPassword";
 import { useUser } from "@/stores/session";
-import { uploadPassword } from "@/api/service/user.service";
+import { useServices } from "@/hooks/useServices";
 import { ModalResetPassword } from "@/components/ModalResetPassword";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LoadingComponent } from "@/components/LoadingComponent";
@@ -19,6 +19,7 @@ export default function ChangePassword(){
     const [visibleReset, setVisibleReset] = useState(false)
     const { token, user } = useUser()
     const { setLoad } = useLoading()
+    const { auth } = useServices()
     const [formPwd, setFormPwd] = useState<IPassword>({
         oldPwd: "",
         newPwd: "",
@@ -40,9 +41,16 @@ export default function ChangePassword(){
                 return
             }
             
-            const resp = await uploadPassword(payload, token!)
+            const resp = await auth.changePassword({
+                currentPassword: formPwd.oldPwd,
+                newPassword: formPwd.newPwd,
+                confirmPassword: formPwd.repeatPwd
+            }, token!)
 
-            if(resp?.status !== 200) return
+            if(!resp.success) {
+                setErrorMessage(resp.error || "Erro ao alterar senha")
+                return
+            }
             
             setVisibleReset(true)
         }catch(error: any){
