@@ -25,7 +25,7 @@ export const DateCard = ({data}: Props) => {
                 style={{ backgroundColor: data.bgColor, borderTopLeftRadius: 6, borderBottomLeftRadius: 6 }}>
                 <Text className="text-white font-semibold text-xl">{data.timeStart}</Text>
                 <Text className="text-white font-semibold text-xl">{data.timeEnd}</Text>
-                <Text className="text-white font-semibold text-xl">{data.status.toLowerCase()}</Text>
+                <Text className="text-white font-semibold text-sm">{data.status.toLowerCase()}</Text>
             </View>
             <View className="flex-1 ml-4 justify-around gap-2">
                 <Text className="font-semibold text-lg">{data.tema}</Text>

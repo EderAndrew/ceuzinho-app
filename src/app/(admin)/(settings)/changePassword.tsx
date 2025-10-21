@@ -1,114 +1,299 @@
-import { Text, TouchableOpacity, View } from "react-native";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons"
-import { useRouter } from "expo-router";
-import { InputComponent } from "@/components/InputComponent";
-import React, { useState } from "react";
-import { IPassword } from "@/interfaces/IPassword";
-import { useUser } from "@/stores/session";
-import { uploadPassword } from "@/api/service/user.service";
-import { ModalResetPassword } from "@/components/ModalResetPassword";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { LoadingComponent } from "@/components/LoadingComponent";
-import { useLoading } from "@/stores/loading";
+import { useCallback, useState, useMemo } from "react";
+import { 
+  Text, 
+  TouchableOpacity, 
+  View, 
+  ScrollView, 
+  Alert,
+  Platform 
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useRouter } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+
+import { InputComponent } from "@/components/InputComponent";
+import { ModalResetPassword } from "@/components/ModalResetPassword";
+import { LoadingComponent } from "@/components/LoadingComponent";
 import { HeaderComponent } from "@/components/HeaderComponent";
 
-export default function ChangePassword(){
-    const route = useRouter()
-    const [errorMessage, setErrorMessage] = useState("")
-    const [visibleReset, setVisibleReset] = useState(false)
-    const { token, user } = useUser()
-    const { setLoad } = useLoading()
-    const [formPwd, setFormPwd] = useState<IPassword>({
-        oldPwd: "",
-        newPwd: "",
-        repeatPwd: ""
-    })
+import { useUser } from "@/stores/session";
+import { useLoading } from "@/stores/loading";
 
-    const handleChangePassword = async() => {
-        try{
-            setLoad(true)
-            const payload = {
-                email: user?.[0].email,
-                oldPwd: formPwd.oldPwd,
-                newPwd: formPwd.newPwd,
-                repeatPwd: formPwd.repeatPwd
-            }
-            if(formPwd.oldPwd === ""  || formPwd.newPwd === "" || formPwd.repeatPwd === ""){
-                setLoad(false)
-                setErrorMessage("Preencha todos os campos.")
-                return
-            }
-            
-            const resp = await uploadPassword(payload, token!)
+import { IPassword } from "@/interfaces/IPassword";
+import { uploadPassword } from "@/api/service/user.service";
+import { PasswordSchema } from "@/schemas/changePassword.schema";
 
-            if(resp?.status !== 200) return
+// Types
+interface FormErrors {
+  oldPwd?: string;
+  newPwd?: string;
+  repeatPwd?: string;
+  general?: string;
+}
+
+interface ChangePasswordState {
+  formPwd: IPassword;
+  errors: FormErrors;
+  visibleReset: boolean;
+  isLoading: boolean;
+}
+
+export default function ChangePassword() {
+  // State
+  const [formPwd, setFormPwd] = useState<IPassword>({
+    oldPwd: "",
+    newPwd: "",
+    repeatPwd: ""
+  });
+  const [errors, setErrors] = useState<FormErrors>({});
+  const [visibleReset, setVisibleReset] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  // Stores and hooks
+  const { token, user } = useUser();
+  const { setLoad } = useLoading();
+  const router = useRouter();
+
+  // Memoized values
+  const currentUser = useMemo(() => user?.[0], [user]);
+  const isFormValid = useMemo(() => {
+    return formPwd.oldPwd.length >= 6 && 
+           formPwd.newPwd.length >= 6 && 
+           formPwd.repeatPwd.length >= 6 &&
+           formPwd.newPwd === formPwd.repeatPwd;
+  }, [formPwd]);
+
+  // Validation functions
+  const validateForm = useCallback((): boolean => {
+    const newErrors: FormErrors = {};
+    
+    // Clear previous errors
+    setErrors({});
+
+    // Validate old password
+    if (!formPwd.oldPwd) {
+      newErrors.oldPwd = "Senha atual é obrigatória";
+    } else if (formPwd.oldPwd.length < 6) {
+      newErrors.oldPwd = "Senha deve ter pelo menos 6 caracteres";
+    }
+
+    // Validate new password
+    if (!formPwd.newPwd) {
+      newErrors.newPwd = "Nova senha é obrigatória";
+    } else if (formPwd.newPwd.length < 6) {
+      newErrors.newPwd = "Nova senha deve ter pelo menos 6 caracteres";
+    }
+
+    // Validate repeat password
+    if (!formPwd.repeatPwd) {
+      newErrors.repeatPwd = "Confirmação de senha é obrigatória";
+    } else if (formPwd.newPwd !== formPwd.repeatPwd) {
+      newErrors.repeatPwd = "Senhas não coincidem";
+    }
+
+    // Check if old and new passwords are the same
+    if (formPwd.oldPwd === formPwd.newPwd) {
+      newErrors.newPwd = "A nova senha deve ser diferente da senha atual";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  }, [formPwd]);
+
+  // Handlers
+  const handleChangePassword = useCallback(async () => {
+    if (!validateForm()) {
+      return;
+    }
+
+    if (!currentUser?.email || !token) {
+      Alert.alert("Erro", "Dados do usuário não encontrados.");
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      setLoad(true);
+      
+      const payload: PasswordSchema = {
+        email: currentUser.email,
+        oldPwd: formPwd.oldPwd,
+        newPwd: formPwd.newPwd,
+        repeatPwd: formPwd.repeatPwd
+      };
+      
+      const resp = await uploadPassword(payload, token);
+
+      if (resp?.status !== 200) {
+        throw new Error(resp?.message || "Erro ao alterar senha");
+      }
+      
+      setVisibleReset(true);
+    } catch (error: any) {
+      console.error('Erro ao alterar senha:', error);
+      const message = error?.response?.data?.message || error?.message || "Erro inesperado ao alterar senha.";
+      
+      setErrors({ general: message });
+      Alert.alert("Erro", message);
+    } finally {
+      setIsLoading(false);
+      setLoad(false);
+    }
+  }, [validateForm, currentUser, token, formPwd, setLoad]);
+
+  const handleLogout = useCallback(async () => {
+    try {
+      setLoad(true);
+      await AsyncStorage.removeItem("user");
+      router.replace("/(auth)/login");
+    } catch (error) {
+      console.error('Erro ao fazer logout:', error);
+      Alert.alert("Erro", "Não foi possível fazer logout. Tente novamente.");
+    } finally {
+      setLoad(false);
+    }
+  }, [router, setLoad]);
+
+  const handleInputChange = useCallback((field: keyof IPassword, value: string) => {
+    setFormPwd(prev => ({ ...prev, [field]: value }));
+    // Clear field error when user starts typing
+    if (errors[field]) {
+      setErrors(prev => ({ ...prev, [field]: undefined }));
+    }
+  }, [errors]);
+
+  // Render functions
+  const renderInputField = useCallback((
+    label: string,
+    field: keyof IPassword,
+    placeholder: string
+  ) => (
+    <View className="mb-6">
+      <Text className="font-RobotoSemibold text-lg text-slate-700 mb-2">
+        {label}
+      </Text>
+      <InputComponent
+        hasIcon={false}
+        placeholder={placeholder}
+        value={formPwd[field]}
+        onChangeText={(text) => handleInputChange(field, text)}
+        secureTextEntry={true}
+      />
+      {errors[field] && (
+        <Text className="text-red-500 text-sm mt-1 font-Roboto">
+          {errors[field]}
+        </Text>
+      )}
+    </View>
+  ), [formPwd, errors, handleInputChange]);
+
+  if (!currentUser) {
+    return (
+      <View className="flex-1 bg-white justify-center items-center">
+        <Text className="text-lg text-slate-600">Carregando dados do usuário...</Text>
+        <LoadingComponent />
+      </View>
+    );
+  }
+
+  return (
+    <View className="flex-1 bg-white">
+      <HeaderComponent title="Alterar Senha" />
+      
+      <SafeAreaView className="flex-1">
+        <ScrollView 
+          className="flex-1 px-4"
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingBottom: 20 }}
+        >
+          {/* Form Section */}
+          <View className="bg-white rounded-xl shadow-sm border border-slate-100 p-6 mt-6">
+            <Text className="font-RobotoBold text-xl text-slate-800 mb-6">
+              Alterar Senha de Acesso
+            </Text>
             
-            setVisibleReset(true)
-        }catch(error: any){
-            const message = error?.response?.data?.message || "Erro inesperado.";
-            setErrorMessage(message);
-        }finally{
-            setLoad(false)
-        }
+            {/* General Error */}
+            {errors.general && (
+              <View className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+                <Text className="text-red-600 font-RobotoSemibold text-center">
+                  {errors.general}
+                </Text>
+              </View>
+            )}
+            
+            {/* Input Fields */}
+            {renderInputField(
+              "Senha Atual",
+              "oldPwd",
+              "Digite sua senha atual"
+            )}
+            
+            {renderInputField(
+              "Nova Senha",
+              "newPwd",
+              "Digite a nova senha"
+            )}
+            
+            {renderInputField(
+              "Confirmar Nova Senha",
+              "repeatPwd",
+              "Digite novamente a nova senha"
+            )}
+            
+            {/* Password Requirements */}
+            <View className="bg-slate-50 rounded-lg p-4 mt-4">
+              <Text className="font-RobotoSemibold text-slate-700 mb-2">
+                Requisitos da senha:
+              </Text>
+              <Text className="text-slate-600 text-sm">
+                • Mínimo de 6 caracteres
+              </Text>
+              <Text className="text-slate-600 text-sm">
+                • Deve ser diferente da senha atual
+              </Text>
+              <Text className="text-slate-600 text-sm">
+                • Confirmação deve ser idêntica
+              </Text>
+            </View>
+          </View>
+        </ScrollView>
         
-    }
-
-    const handleLogout = async() => {
-        setLoad(true)
-        await AsyncStorage.removeItem("user")
-        route.replace("/(auth)/login")
-        setLoad(false)
-    }
-
-    return(
-        <View className="flex-1 bg-white">
-            <HeaderComponent
-                title="Mudar a Senha"
+        {/* Action Button */}
+        <View className="px-4 pb-4">
+          <TouchableOpacity
+            className={`
+              flex-row justify-center items-center py-4 px-6 rounded-xl shadow-sm
+              ${isFormValid && !isLoading 
+                ? 'bg-bcgreen' 
+                : 'bg-slate-300'
+              }
+            `}
+            onPress={handleChangePassword}
+            disabled={!isFormValid || isLoading}
+            accessibilityLabel="Alterar senha"
+          >
+            <MaterialIcons 
+              size={24} 
+              name="lock" 
+              color={isFormValid && !isLoading ? "#fff" : "#9ca3af"} 
             />
-            <SafeAreaView className="flex-1 px-4 justify-between items-center">
-                <View>
-                    <View className="gap-2">
-                        <Text className="font-Roboto text-xl">Digite a sua senha</Text>
-                        <InputComponent
-                            hasIcon={false}
-                            placeholder={"Senha Antiga"}
-                            value={formPwd.oldPwd}
-                            onChangeText={(text) => setFormPwd({...formPwd, oldPwd: text})}
-                            secureTextEntry={true}
-                        />
-                    </View>
-                    <View className="mt-6 gap-2">
-                        <Text className="font-Roboto text-xl">Digite a nova Senha</Text>
-                        <InputComponent
-                            hasIcon={false}
-                            placeholder={"Senha nova"}
-                            value={formPwd.newPwd}
-                            onChangeText={(text) => setFormPwd({...formPwd, newPwd: text})}
-                            secureTextEntry={true}
-                        />
-                    </View>
-                    <View className="mt-6 gap-2">
-                        <Text className="font-Roboto text-xl">Repita a Senha</Text>
-                        <InputComponent
-                            hasIcon={false}
-                            placeholder={"Repetir nova Senha"}
-                            value={formPwd.repeatPwd}
-                            onChangeText={(text) => setFormPwd({...formPwd, repeatPwd: text})}
-                            secureTextEntry={true}
-                        />
-                    </View>
-                    <Text className="m-auto mt-8 font-RobotoBold text-xl text-red-600">{errorMessage}</Text>
-                </View>
-                <TouchableOpacity onPress={handleChangePassword} className="m-auto">
-                    <Text className="bg-bcgreen text-xl font-RobotoSemibold">Trocar</Text>
-                </TouchableOpacity>                
-            </SafeAreaView>
-            <ModalResetPassword
-                visible={visibleReset}
-                handleLogout={handleLogout}
-            />
-            <LoadingComponent />
+            <Text className={`
+              font-RobotoSemibold text-lg ml-2
+              ${isFormValid && !isLoading ? 'text-white' : 'text-slate-400'}
+            `}>
+              {isLoading ? "Alterando..." : "Alterar Senha"}
+            </Text>
+          </TouchableOpacity>
         </View>
-    )
+      </SafeAreaView>
+      
+      {/* Modals */}
+      <ModalResetPassword
+        visible={visibleReset}
+        handleLogout={handleLogout}
+      />
+      <LoadingComponent />
+    </View>
+  );
 }
