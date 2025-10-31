@@ -199,9 +199,8 @@ export default function ChangePassword() {
 
   return (
     <View className="flex-1 bg-white">
-      <HeaderComponent title="Alterar Senha" />
-      
       <SafeAreaView className="flex-1">
+      <HeaderComponent title="Alterar Senha" />
         <ScrollView 
           className="flex-1 px-4"
           showsVerticalScrollIndicator={false}

@@ -23,12 +23,6 @@ import { useSession } from "@/hooks/useSession";
 
 import { IUser } from "@/interfaces/IUser";
 
-// Types
-interface ProfileState {
-  openModal: boolean;
-  openCamera: boolean;
-}
-
 interface ProfileInfo {
   label: string;
   value: string | undefined;
@@ -51,8 +45,6 @@ export default function Perfil() {
     if (!currentUser) return null;
     return useSession(currentUser as IUser).session;
   }, [currentUser]);
-
-  const isIOS = Platform.OS === 'ios';
 
   // Handlers
   const handleLogout = useCallback(async () => {

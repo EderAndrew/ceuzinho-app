@@ -5,17 +5,20 @@ import { SafeAreaView } from "react-native-safe-area-context"
 
 type Props = {
     title: string
+    btnBack?: boolean
 }
 
-export const HeaderComponent = ({title}: Props) => {
+export const HeaderComponent = ({title, btnBack = true}: Props) => {
     const route = useRouter()
     
     return (
-        <SafeAreaView className="flex flex-row items-center gap-2">
-            <TouchableOpacity onPress={()=> route.back()}>
-                <MaterialIcons size={38} name='arrow-back' color={"#1e293b"} />
-            </TouchableOpacity>
+        <View className="flex flex-row items-center gap-2">
+            {btnBack && 
+                <TouchableOpacity className="p-2" onPress={()=> route.back()}>
+                    <MaterialIcons size={38} name='arrow-back' color={"#1e293b"} />
+                </TouchableOpacity>
+            }
             <Text className="text-3xl font-RobotoBold text-slate-800">{title}</Text>
-        </SafeAreaView>
+        </View>
     )
 }
