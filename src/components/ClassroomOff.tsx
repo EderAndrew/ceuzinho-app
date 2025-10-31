@@ -4,10 +4,22 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useDate } from "@/hooks/useDate";
 import { useEffect, useMemo, useState } from "react";
+import { useschedule } from "@/stores/scheduleStore";
+import { CompareDate } from "@/hooks/compareDate";
 
 export const ClassroomOff = () => {
     const [date, setDate] = useState<string>("");
     const currentDate = useMemo(() => new Date(), []);
+    const [enableButton, setEnableButton] = useState<boolean>(true);
+    const { schedule } = useschedule();
+    
+    //Pegar aula mais próxima
+    useEffect(() => {
+        if(schedule.length > 0){
+            const teste = CompareDate(currentDate, schedule[0].date.split("T")[0]);
+            console.log("Teste: ", teste);
+        }
+    }, [schedule]);
 
     useEffect(() => {
         const formattedDate = useDate(currentDate);
