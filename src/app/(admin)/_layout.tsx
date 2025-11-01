@@ -8,7 +8,6 @@ export default function AdminLayout() {
         >
             <Stack.Screen name="(tabs)" />
             <Stack.Screen name="(schedules)" />
-            <Stack.Screen name="(calendar)" />
             <Stack.Screen name="(settings)" />
         </Stack>
     );
