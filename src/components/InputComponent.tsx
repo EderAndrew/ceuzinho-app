@@ -25,7 +25,7 @@ export const InputComponent = ({
         <View className={`${style} h-14 border border-slate-400 bg-white rounded-lg flex-row items-center`}>
             {hasIcon && (<MaterialIcons size={28} name={icon} color={"#9c9c9c"} />)}
             <TextInput
-                className="font-RobotoRegular text-xl w-[100%] text-slate-800"                          
+                className="font-RobotoRegular text-xl w-[100%] text-slate-800 ml-2"                          
                 onChangeText={onChangeText}
                 value={value}
                 placeholder={placeholder}

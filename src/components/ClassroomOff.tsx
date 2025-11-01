@@ -17,7 +17,7 @@ export const ClassroomOff = () => {
     useEffect(() => {
         if(schedule.length > 0){
             const teste = CompareDate(currentDate, schedule[0].date.split("T")[0]);
-            console.log("Teste: ", teste);
+
         }
     }, [schedule]);
 

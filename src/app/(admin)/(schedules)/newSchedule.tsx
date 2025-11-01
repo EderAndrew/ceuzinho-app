@@ -25,26 +25,13 @@ import { LoadingComponent } from "@/components/LoadingComponent";
 import { useLoading } from "@/stores/loading";
 import { ISchedulesPaylod } from "@/interfaces/ISchedules";
 import { HeaderComponent } from "@/components/HeaderComponent";
+import { FormErrors, FormState } from "@/interfaces/IFormCalendar";
 
 // Constants
 const MAX_TEACHERS = 2;
 const MIN_TEACHERS = 1;
 const SCHEDULE_TYPE = "CEUZINHO";
 const TEACHER_LIST_HEIGHT = 384; // 96 * 4 (96 = h-96 in Tailwind)
-
-// Types
-interface FormErrors {
-  theme?: string;
-  teachers?: string;
-}
-
-interface FormState {
-  theme: string;
-  selectedRoomType: string;
-  selectedIds: number[];
-  selectedPeriodsType: string;
-  errors: FormErrors;
-}
 
 export default function NewSchedule() {
     const router = useRouter();
