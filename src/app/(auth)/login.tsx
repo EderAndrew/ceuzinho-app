@@ -136,8 +136,8 @@ export default function Login() {
       setToken(data.token);
       setUser([resp.user]);
 
-      // Navigate to main app
-      router.replace('/(admin)/calendar');
+      // Navigate to main tabbed area
+      router.replace('/(admin)/(tabs)/calendar');
     } catch (error: any) {
       console.error('Erro no login:', error);
       const errorMessage = error?.message || "Erro inesperado ao fazer login.";

@@ -1,17 +1,15 @@
-import { Tabs } from "expo-router";
-import { TabBar } from "@/components/TabBar";
+import { Stack } from "expo-router";
 
-export default function AdmintLayout() {    
+export default function AdminLayout() {
     return (
-        <Tabs initialRouteName="(calendar)"
-            screenOptions={{
-                headerShown: false
-            }}
-            tabBar={props => <TabBar {...props}/>}
+        <Stack
+            initialRouteName="(tabs)"
+            screenOptions={{ headerShown: false }}
         >
-            <Tabs.Screen name="newRoom" options={{ title: "Sala" }}/>
-            <Tabs.Screen name="(calendar)" options={{ title: "Agenda" }}/>
-            <Tabs.Screen name="(settings)" options={{ title: "Perfil" }}/>
-        </Tabs>
-    )
+            <Stack.Screen name="(tabs)" />
+            <Stack.Screen name="(schedules)" />
+            <Stack.Screen name="(calendar)" />
+            <Stack.Screen name="(settings)" />
+        </Stack>
+    );
 }
