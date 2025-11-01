@@ -200,7 +200,7 @@ export default function NewSchedule() {
             className="flex-1 bg-white"
             behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
-            <HeaderComponent title={date} />
+            
             
             <SafeAreaView className="flex-1">
                 <ScrollView 
@@ -208,6 +208,7 @@ export default function NewSchedule() {
                     showsVerticalScrollIndicator={false}
                     keyboardShouldPersistTaps="handled"
                 >
+                    <HeaderComponent title={date} />
                     {/* Form Fields */}
                     <View className="py-4">
                         {/* Theme Input */}
