@@ -57,9 +57,23 @@ export const uploadPassword = async(payload: PasswordSchema, token: string) => {
     }
 }
 
-export const allTeachers = async(token: string) => {
+export const allUsers = async(token: string) => {
     try{
         const resp = await api.get("/users/all", {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+
+        return resp.data
+    }catch(error){
+        console.error(error)
+    }
+}
+
+export const allTeachers = async(token: string) => {
+    try{
+        const resp = await api.get("/users/teachers", {
             headers: {
                 Authorization: `Bearer ${token}`
             }
