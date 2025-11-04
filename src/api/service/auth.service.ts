@@ -54,3 +54,15 @@ export const userSession = async(token: string) => {
     console.error(error)
    }
 }
+
+export const passwordRecovery = async(email: string) => {
+    try{
+        const response = await api.post("/recovery/sendotc", {
+            email: email
+        })
+
+        return response.data
+    }catch(error: any){
+        console.error(error)
+    }
+}
