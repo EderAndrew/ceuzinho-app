@@ -204,7 +204,7 @@ export default function Login() {
             {/* Header */}
             <View className="mb-8">
               <Text className="font-RobotoBold text-3xl text-white mb-2">
-                👋 Bem-vindo de volta!
+                👋 Bem-vindo(a)!
               </Text>
               <Text className="font-Roboto text-white/80 text-lg">
                 Faça login para continuar

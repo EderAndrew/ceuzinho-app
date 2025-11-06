@@ -4,15 +4,11 @@ import {
   Text, 
   Image, 
   TouchableOpacity, 
-  Platform, 
   Alert,
-  KeyboardAvoidingView,
-  ScrollView,
   Dimensions
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
-import { StatusBar } from 'expo-status-bar';
 import { SystemBars } from "react-native-edge-to-edge";
 
 import { InputComponent } from "@/components/InputComponent";
@@ -22,12 +18,12 @@ import { LoadingComponent } from "@/components/LoadingComponent";
 import { useUser } from "@/stores/session";
 import { useLoading } from "@/stores/loading";
 
-import { LoginSchema } from "@/schemas/login.schema";
-import { passwordRecovery, signIn, userSession } from "@/api/service/auth.service";
-import { ILogin } from "@/interfaces/ILogin";
+import { changeRecoveryPassword, createOtc, verifyOtc } from "@/api/service/auth.service";
 
 import MaterialIcons from "@expo/vector-icons/MaterialIcons"
 import { OtpComponent } from "@/components/OtpComponent";
+import { ChangePasswordComponent } from "@/components/ChangePasswordComponent";
+import { RecoveryPasswordSchema } from "@/schemas/changePassword.schema";
 
 
 // Constants
@@ -36,15 +32,20 @@ const LOGO_HEIGHT = 112; // h-28 = 112px
 
 export default function ForgetPassword() {
   // State
-  const [form, setForm] = useState<LoginSchema>({
+  const [form, setForm] = useState({
     email: "",
-    password: ""
+    password: "",
+    repeatPassword: ""
   });
+
+  const [otpText, setOtpText] = useState<string>("");
   const [message, setMessage] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [errors, setErrors] = useState<{
     email?: string;
-    password?: string;
+    oldPwd?: string;
+    newPwd?: string;
+    repeatPwd?: string;
     general?: string;
   }>({});
   const [etapa, setEtapa] = useState<number>(0);
@@ -81,7 +82,7 @@ export default function ForgetPassword() {
   }, [form]);
 
   // Handlers
-  const handleInputChange = useCallback((field: keyof LoginSchema, value: string) => {
+  const handleInputChange = useCallback((field: keyof RecoveryPasswordSchema, value: string) => {
     setForm(prev => ({ ...prev, [field]: value }));
     // Clear field error when user starts typing
     if (errors[field]) {
@@ -104,12 +105,59 @@ export default function ForgetPassword() {
       setMessage("");
       setErrors({});
       
-      await passwordRecovery(form.email);
-      
       if (!isLoading && !load && etapa === 0){
+        const resp = await createOtc(form.email);
+        if (resp.error){
+          throw new Error(resp.message);
+        }
         setEtapa(1);
-        console.log("Mostrar OTC no componente");
+        return
       }
+
+      if (!isLoading && !load && etapa === 1){
+        const resp = await verifyOtc(form.email, otpText);
+        if (resp.error){
+          throw new Error(resp.message);
+        }
+        setEtapa(2);
+        return
+      }
+
+      if (!isLoading && !load && etapa === 2){
+        if(form.password !== form.repeatPassword){
+          const errorMessage = "Senhas não coincidem";
+          setMessage(errorMessage);
+          setErrors({ general: errorMessage });
+          return;
+        }
+
+        const payload: RecoveryPasswordSchema = {
+          email: form.email,
+          newPwd: form.password,
+          repeatPwd: form.repeatPassword,
+        };
+
+        const resp = await changeRecoveryPassword(payload, otpText);
+        if (resp.error){
+          throw new Error(resp.message);
+        }
+
+        Alert.alert("Senha alterada com sucesso");
+        setEtapa(0);
+        setForm({
+          email: "",
+          password: "",
+          repeatPassword: ""
+        });
+        setOtpText("");
+        setMessage("");
+        setErrors({});
+        setIsLoading(false);
+        setLoad(false);
+        router.replace("/(auth)/login");
+        return
+      }
+
     } catch (error: any) {
       console.error('Erro no login:', error);
       const errorMessage = error?.message || "Erro inesperado ao Verificar o E-mail.";
@@ -141,7 +189,7 @@ export default function ForgetPassword() {
     return null;
   }, [message]);
 
-  const renderFieldError = useCallback((field: keyof LoginSchema) => {
+  const renderFieldError = useCallback((field: keyof RecoveryPasswordSchema) => {
     const error = errors[field];
     if (error) {
       return (
@@ -176,7 +224,10 @@ export default function ForgetPassword() {
                 Esqueci minha senha
               </Text>
               <Text className="font-Roboto text-white/80 text-lg">
-                {etapa === 0 ? "Digite o seu email para receber um link de recuperação" : "Digite o código enviado para seu email"}
+                {etapa === 0 
+                  ? "Digite o seu email para receber um link de recuperação" 
+                  : etapa === 1 ? "Digite o código enviado para seu email" 
+                  : "Digite a nova senha e repita para confirmar a alteração"}
               </Text>
             </View>
             
@@ -199,8 +250,15 @@ export default function ForgetPassword() {
                 {renderErrorMessage()}
               </View>
             }
-            {etapa === 1 && <OtpComponent />}
-            
+            {etapa === 1 && <OtpComponent 
+              onTextChange={setOtpText}
+            />}
+            {etapa === 2 && <ChangePasswordComponent
+              password={form.password}
+              repeatPassword={form.repeatPassword}
+              handleInputChange={(field, value) => handleInputChange(field as keyof RecoveryPasswordSchema, value)}
+              renderFieldError={(field) => renderFieldError(field as keyof RecoveryPasswordSchema)}
+            />}
           </View>
           
           {/* Action Button */}
