@@ -116,9 +116,13 @@ export default function ForgetPassword() {
 
       if (!isLoading && !load && etapa === 1){
         const resp = await verifyOtc(form.email, otpText);
-        if (resp.error){
+
+        if (resp.error) {
+          setMessage(resp.message);
+          setErrors({ general: resp.message });
           throw new Error(resp.message);
         }
+
         setEtapa(2);
         return
       }

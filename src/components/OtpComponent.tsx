@@ -11,7 +11,7 @@ export const OtpComponent = ({ onTextChange }: props) => {
             numberOfDigits={6}
             focusColor="green"
             type="numeric"
-            onTextChange={onTextChange}
+            onTextChange={(text) => onTextChange(text)}
         />
     )
 }
